@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Expert Network Market Intelligence — Prototype</title>
+<style>
+/* ── Variables ── */
+:root {
+  --bg: #121214;
+  --surface: #1c1c1e;
+  --surface-hover: #2c2c2e;
+  --border: rgba(255,255,255,0.08);
+  --border-strong: rgba(255,255,255,0.14);
+  --text: #f5f5f7;
+  --text-secondary: #a1a1a6;
+  --text-tertiary: #6e6e73;
+  --accent: #5e8fc9;
+  --accent-muted: rgba(94,143,201,0.15);
+  --radius: 12px;
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Nav ── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(18,18,20,0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+}
+nav ul {
+  display: flex; gap: 1.5rem; list-style: none;
+  max-width: 1200px; margin: 0 auto;
+  overflow-x: auto;
+}
+nav a {
+  display: block; padding: 0.75rem 0;
+  color: var(--text-secondary); text-decoration: none;
+  font-size: 0.8rem; font-weight: 500;
+  letter-spacing: 0.02em; white-space: nowrap;
+  transition: color 0.2s;
+}
+nav a:hover { color: var(--text); }
+
+/* ── Layout ── */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+section { padding: 4rem 0; }
+.section-label {
+  font-size: 0.7rem; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 0.5rem;
+}
+.section-title {
+  font-size: 1.75rem; font-weight: 600;
+  letter-spacing: -0.02em; margin-bottom: 0.5rem;
+}
+.section-subtitle {
+  color: var(--text-secondary); font-size: 0.95rem;
+  max-width: 640px; margin-bottom: 2rem;
+}
+
+/* ── Hero ── */
+#hero { padding: 5rem 0 3rem; text-align: center; }
+#hero h1 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700; letter-spacing: -0.03em;
+  margin-bottom: 0.75rem;
+}
+#hero .subtitle {
+  color: var(--text-secondary); font-size: 1.1rem;
+  max-width: 640px; margin: 0 auto 1rem;
+}
+#hero .context {
+  color: var(--text-tertiary); font-size: 0.85rem;
+  margin-bottom: 2.5rem;
+}
+.stat-band {
+  display: flex; justify-content: center; gap: 1.5rem;
+  flex-wrap: wrap;
+}
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.75rem; min-width: 180px;
+  text-align: center;
+}
+.stat-card .number {
+  font-size: 1.75rem; font-weight: 700;
+  color: var(--accent); letter-spacing: -0.02em;
+}
+.stat-card .label {
+  font-size: 0.75rem; color: var(--text-secondary);
+  margin-top: 0.25rem;
+}
+
+/* ── Cards grid ── */
+.card-grid {
+  display: grid; gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  transition: border-color 0.2s;
+}
+.card:hover { border-color: var(--border-strong); }
+.card h3 {
+  font-size: 1rem; font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+.card p {
+  font-size: 0.875rem; color: var(--text-secondary);
+  line-height: 1.55;
+}
+.card .so-what {
+  margin-top: 0.75rem; font-size: 0.8rem;
+  color: var(--accent); font-weight: 500;
+}
+
+/* ── Market Map ── */
+.quadrant-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+.quadrant-cell {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+}
+.quadrant-cell h4 {
+  font-size: 0.85rem; font-weight: 600;
+  margin-bottom: 0.75rem; color: var(--accent);
+}
+.quadrant-cell ul { list-style: none; }
+.quadrant-cell li {
+  font-size: 0.85rem; color: var(--text-secondary);
+  padding: 0.25rem 0;
+}
+.quadrant-cell li strong { color: var(--text); font-weight: 500; }
+.map-note {
+  font-size: 0.75rem; color: var(--text-tertiary);
+  margin-top: 1rem; font-style: italic;
+}
+
+/* ── Signals ── */
+.signal-list { display: flex; flex-direction: column; gap: 0.75rem; }
+.signal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.5rem;
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 1rem;
+  transition: border-color 0.2s;
+}
+.signal:hover { border-color: var(--border-strong); }
+.signal-meta {
+  font-size: 0.75rem; color: var(--text-tertiary);
+  display: flex; flex-direction: column; gap: 0.25rem;
+  padding-top: 0.1rem;
+}
+.signal-meta .date { color: var(--text-secondary); font-weight: 500; }
+.signal-tag {
+  display: inline-block;
+  background: var(--accent-muted);
+  color: var(--accent);
+  font-size: 0.65rem; font-weight: 600;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  width: fit-content;
+}
+.signal-body h4 {
+  font-size: 0.9rem; font-weight: 600;
+  margin-bottom: 0.35rem;
+}
+.signal-body p {
+  font-size: 0.82rem; color: var(--text-secondary);
+  line-height: 1.5;
+}
+.signal-body .implication {
+  font-size: 0.78rem; color: var(--accent);
+  margin-top: 0.5rem; font-weight: 500;
+}
+
+/* ── Comparison matrix ── */
+.matrix-wrapper { overflow-x: auto; }
+table.matrix {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.8rem;
+}
+table.matrix th, table.matrix td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border);
+  text-align: left; vertical-align: top;
+}
+table.matrix th {
+  background: var(--surface);
+  color: var(--text-secondary);
+  font-weight: 600; font-size: 0.7rem;
+  text-transform: uppercase; letter-spacing: 0.05em;
+  position: sticky; top: 42px;
+}
+table.matrix td { color: var(--text-secondary); }
+table.matrix td:first-child {
+  color: var(--text); font-weight: 500;
+  white-space: nowrap;
+}
+table.matrix tr:hover td { background: rgba(255,255,255,0.02); }
+
+/* ── Methodology ── */
+.evidence-grid {
+  display: grid; gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+.evidence-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+}
+.evidence-card .badge {
+  display: inline-block;
+  font-size: 0.65rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+}
+.badge-verified { background: #1a3a2a; color: #4ade80; }
+.badge-stated { background: #1a2a3a; color: #60a5fa; }
+.badge-inferred { background: #2a2a1a; color: #facc15; }
+.badge-weak { background: #2a1a1a; color: #a1a1a6; }
+.evidence-card p {
+  font-size: 0.82rem; color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* ── Footer ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 3rem 0; text-align: center;
+  color: var(--text-tertiary); font-size: 0.8rem;
+}
+footer strong { color: var(--text-secondary); font-weight: 500; }
+
+/* ── Responsive ── */
+@media (max-width: 700px) {
+  .quadrant-grid { grid-template-columns: 1fr; }
+  .signal { grid-template-columns: 1fr; }
+  .stat-band { flex-direction: column; align-items: center; }
+  nav ul { gap: 1rem; }
+}
+
+/* ── Print ── */
+@media print {
+  nav { display: none; }
+  body { background: #fff; color: #111; }
+  .card, .quadrant-cell, .signal, .evidence-card, .stat-card {
+    background: #f8f8f8; border-color: #ddd;
+    break-inside: avoid;
+  }
+  .signal-tag { background: #eee; color: #333; }
+  .badge-verified, .badge-stated, .badge-inferred, .badge-weak {
+    background: #eee; color: #333;
+  }
+  :root { --accent: #2563eb; --text-secondary: #555; --text-tertiary: #888; }
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════ NAV ════════════ -->
+<nav>
+  <ul>
+    <li><a href="#hero">Overview</a></li>
+    <li><a href="#summary">Executive Summary</a></li>
+    <li><a href="#map">Market Map</a></li>
+    <li><a href="#signals">Signals</a></li>
+    <li><a href="#framework">Competitive Framework</a></li>
+    <li><a href="#methodology">Methodology</a></li>
+  </ul>
+</nav>
+
+<!-- ════════════ HERO ════════════ -->
+<section id="hero">
+  <div class="container">
+    <p class="section-label">Prototype Intelligence Briefing</p>
+    <h1>Expert Network Market Intelligence</h1>
+    <p class="subtitle">A public-source competitive intelligence layer for tracking provider moves, AI capabilities, product evolution, and buyer-relevant differentiators across the expert network industry.</p>
+    <p class="context">Built on editorial research from ExpertNetworks.net — structured for decision-makers, not consumers.</p>
+    <div class="stat-band">
+      <div class="stat-card">
+        <div class="number">33</div>
+        <div class="label">Providers Tracked</div>
+      </div>
+      <div class="stat-card">
+        <div class="number">57</div>
+        <div class="label">Intelligence Signals</div>
+      </div>
+      <div class="stat-card">
+        <div class="number">45+</div>
+        <div class="label">Comparison Dimensions</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ EXECUTIVE SUMMARY ════════════ -->
+<section id="summary">
+  <div class="container">
+    <p class="section-label">Executive Summary</p>
+    <h2 class="section-title">What the landscape looks like now</h2>
+    <p class="section-subtitle">Four structural dynamics shaping the expert network market in 2025–2026.</p>
+    <div class="card-grid">
+
+      <div class="card">
+        <h3>Market Structure Is Consolidating</h3>
+        <p>The industry has grown to an estimated $2.5–5B depending on methodology, with 11,200+ companies using expert networks globally. A core tier of roughly 15 institutional-grade firms handles the majority of volume, while dozens of niche and regional players serve specific verticals or geographies.</p>
+        <div class="so-what">Implication: Scale advantages are compounding — smaller firms face margin and access pressure.</div>
+      </div>
+
+      <div class="card">
+        <h3>AI Is Reshaping the Competitive Stack</h3>
+        <p>Every major provider shipped AI features between 2024–2026. AlphaSense reached $500M ARR with agentic research tools. GLG, Guidepoint, and Dialectica each launched AI-assisted matching, synthesis, or workflow products. AI is moving from differentiator to table stakes.</p>
+        <div class="so-what">Implication: Buyer expectations for AI-augmented delivery are accelerating faster than most providers can ship.</div>
+      </div>
+
+      <div class="card">
+        <h3>Transcript &amp; Content Assets Are a Battleground</h3>
+        <p>Third Bridge distributes its library through six AI partners. AlphaSense claims 240K+ transcripts across 500M+ documents. Content-rich models create recurring usage and switching costs that call-only providers struggle to match.</p>
+        <div class="so-what">Implication: Firms without a content asset will increasingly compete on price and speed alone.</div>
+      </div>
+
+      <div class="card">
+        <h3>Buyer Sophistication Is Increasing</h3>
+        <p>PE firms, consultancies, and corporate strategy teams now compare providers across compliance posture, AI tooling, vertical depth, and integration fit — not just cost per call. Procurement is becoming more structured and multi-vendor.</p>
+        <div class="so-what">Implication: Transparent comparison and compliance credibility are now buying criteria, not afterthoughts.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ MARKET MAP ════════════ -->
+<section id="map">
+  <div class="container">
+    <p class="section-label">Market Map</p>
+    <h2 class="section-title">Landscape Segmentation</h2>
+    <p class="section-subtitle">Editorial synthesis of the competitive landscape across service model and platform capability.</p>
+    <div class="quadrant-grid">
+
+      <div class="quadrant-cell">
+        <h4>Global Full-Service Leaders</h4>
+        <ul>
+          <li><strong>GLG</strong> — ~1.2M experts, concierge model, Ask AI synthesis</li>
+          <li><strong>AlphaSights</strong> — $4.2B valuation, AlphaGPT, 70% CAGR</li>
+          <li><strong>Third Bridge</strong> — Library of 65K+ companies, open distribution</li>
+          <li><strong>Guidepoint</strong> — 1.75M+ experts, Guidepoint360, 5,000+ clients</li>
+        </ul>
+      </div>
+
+      <div class="quadrant-cell">
+        <h4>AI-Forward / Platform-Led</h4>
+        <ul>
+          <li><strong>AlphaSense (incl. Tegus)</strong> — $500M ARR, agentic Deep Research</li>
+          <li><strong>NewtonX</strong> — Knowledge Graph (1.1B records), B2B survey focus</li>
+          <li><strong>Techspert</strong> — AI-native life sciences matching</li>
+          <li><strong>Dialectica</strong> — IQ platform, 80M records, 50+ GenAI tools</li>
+        </ul>
+      </div>
+
+      <div class="quadrant-cell">
+        <h4>APAC &amp; Regional Specialists</h4>
+        <ul>
+          <li><strong>Capvision</strong> — Greater China origin, IPO paused post-regulatory review</li>
+          <li><strong>Arches</strong> — Singapore-based, Bloomberg-integrated library</li>
+          <li><strong>VisasQ</strong> — Japanese marketplace model</li>
+          <li><strong>Lynk</strong> — Asia-focused platform</li>
+        </ul>
+      </div>
+
+      <div class="quadrant-cell">
+        <h4>Boutique &amp; Niche Players</h4>
+        <ul>
+          <li><strong>Atheneum</strong> — Berlin HQ, multilingual, Athena One + ATLAS AI</li>
+          <li><strong>ProSapient</strong> — Platform-led, mid-market focus</li>
+          <li><strong>Coleman Research</strong> — PE-oriented concierge</li>
+          <li><strong>Mosaic, Ridgetop, others</strong> — Vertical or sector specialists</li>
+        </ul>
+      </div>
+
+    </div>
+    <p class="map-note">Editorial synthesis based on public-source research. Not a statistically derived positioning model. All characterizations are based on publicly available company disclosures.</p>
+  </div>
+</section>
+
+<!-- ════════════ COMPETITOR SIGNALS ════════════ -->
+<section id="signals">
+  <div class="container">
+    <p class="section-label">Intelligence Stream</p>
+    <h2 class="section-title">Recent Competitor Signals</h2>
+    <p class="section-subtitle">Select public-source signals illustrating market movement. Each labeled as editorial synthesis.</p>
+    <div class="signal-list">
+
+      <div class="signal">
+        <div class="signal-meta">
+          <span class="date">Oct 2025</span>
+          <span class="signal-tag">AI Launch</span>
+        </div>
+        <div class="signal-body">
+          <h4>AlphaSense reaches $500M ARR, launches agentic Deep Research</h4>
+          <p>AlphaSense disclosed $500M in annual recurring revenue and launched Deep Research, an agentic workflow product, alongside AI-driven Channel Checks that automate expert interviewing at scale.</p>
+          <div class="implication">Raises the ceiling for what buyers expect from a research platform — providers without agentic capabilities may face repositioning pressure.</div>
+        </div>
+      </div>
+
+      <div class="signal">
+        <div class="signal-meta">
+          <span class="date">Oct 2025</span>
+          <span class="signal-tag">Product</span>
+        </div>
+        <div class="signal-body">
+          <h4>Guidepoint launches Guidepoint360 and AskGP</h4>
+          <p>Guidepoint released its unified platform Guidepoint360 with AskGP, an AI assistant for cross-transcript search and synthesis, plus AI-powered compliance moderation.</p>
+          <div class="implication">Signals that traditional concierge providers are investing heavily in platform parity — the concierge-vs-platform distinction is blurring.</div>
+        </div>
+      </div>
+
+      <div class="signal">
+        <div class="signal-meta">
+          <span class="date">2025</span>
+          <span class="signal-tag">Distribution</span>
+        </div>
+        <div class="signal-body">
+          <h4>Third Bridge opens content distribution to six AI partners</h4>
+          <p>Third Bridge made its research library available through Claude, Aiera, Hebbia, Portrait Analytics, Finster, and Rogo — a notable shift toward open distribution of expert-derived content.</p>
+          <div class="implication">Content owners may gain leverage by becoming upstream data suppliers to multiple AI platforms — a new monetization and moat strategy.</div>
+        </div>
+      </div>
+
+      <div class="signal">
+        <div class="signal-meta">
+          <span class="date">Aug 2025</span>
+          <span class="signal-tag">Milestone</span>
+        </div>
+        <div class="signal-body">
+          <h4>Dialectica surpasses $100M revenue with 1,400 employees</h4>
+          <p>Dialectica reported exceeding $100M in revenue, maintaining a 70% lifetime CAGR over five consecutive years on the FT 1000. The firm also appointed Jason Howard (ex-Tegus GC, 13 years SEC) as Chief Legal Officer.</p>
+          <div class="implication">Growth-stage firm maturing into institutional credibility — the compliance hire signals readiness for larger, more regulated enterprise accounts.</div>
+        </div>
+      </div>
+
+      <div class="signal">
+        <div class="signal-meta">
+          <span class="date">Sep 2024</span>
+          <span class="signal-tag">Funding</span>
+        </div>
+        <div class="signal-body">
+          <h4>AlphaSights raises $400M at $4.2B valuation</h4>
+          <p>AlphaSights closed a $400M capital raise valuing the firm at $4.2B, underscoring investor confidence in the expert network model. The firm was also named an FT Growth Champion for 2026.</p>
+          <div class="implication">Validates the market thesis at scale — signals that expert networks are attracting growth-equity capital typically reserved for enterprise SaaS.</div>
+        </div>
+      </div>
+
+      <div class="signal">
+        <div class="signal-meta">
+          <span class="date">May 2023</span>
+          <span class="signal-tag">Regulatory</span>
+        </div>
+        <div class="signal-body">
+          <h4>Capvision HKEX IPO stalled following CCTV regulatory investigation</h4>
+          <p>Capvision's planned Hong Kong IPO was paused after a CCTV broadcast investigated the firm's operations in mainland China, highlighting regulatory risks for cross-border expert network providers.</p>
+          <div class="implication">Geopolitical and regulatory exposure is a material competitive variable — compliance credibility matters more in cross-border contexts.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ COMPETITIVE FRAMEWORK ════════════ -->
+<section id="framework">
+  <div class="container">
+    <p class="section-label">Competitive Framework</p>
+    <h2 class="section-title">Advantage Stack by Dimension</h2>
+    <p class="section-subtitle">How the top five providers differentiate across key buyer-relevant dimensions. Based on public disclosures and editorial assessment.</p>
+    <div class="matrix-wrapper">
+      <table class="matrix">
+        <thead>
+          <tr>
+            <th>Dimension</th>
+            <th>GLG</th>
+            <th>AlphaSights</th>
+            <th>Third Bridge</th>
+            <th>Guidepoint</th>
+            <th>Dialectica</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>AI Workflow</td>
+            <td>Ask AI, myGLG</td>
+            <td>AlphaGPT, AlphaGraph</td>
+            <td>Library AI search</td>
+            <td>AskGP, AI moderation</td>
+            <td>IQ platform, 50+ GenAI tools</td>
+          </tr>
+          <tr>
+            <td>Transcript / Content</td>
+            <td>20K+ transcripts</td>
+            <td>Not disclosed</td>
+            <td>65K+ companies</td>
+            <td>Growing library</td>
+            <td>Emerging library</td>
+          </tr>
+          <tr>
+            <td>Delivery Model</td>
+            <td>Concierge</td>
+            <td>Concierge</td>
+            <td>Hybrid</td>
+            <td>Concierge</td>
+            <td>Hybrid</td>
+          </tr>
+          <tr>
+            <td>Expert Scale</td>
+            <td>~1.2M</td>
+            <td>Not disclosed</td>
+            <td>1.5M+</td>
+            <td>1.75M+</td>
+            <td>750K+</td>
+          </tr>
+          <tr>
+            <td>Compliance Posture</td>
+            <td>ISO 27001, post-breach</td>
+            <td>Strong vetting</td>
+            <td>SOC 2, structured</td>
+            <td>Multi-layered</td>
+            <td>ICA shortlisted, ex-SEC hire</td>
+          </tr>
+          <tr>
+            <td>Geography</td>
+            <td>Global, US-heavy</td>
+            <td>Global, US/UK core</td>
+            <td>Global, 12 offices</td>
+            <td>Global, 19 offices</td>
+            <td>Global, EU/growth markets</td>
+          </tr>
+          <tr>
+            <td>Best For</td>
+            <td>Consulting, corporate</td>
+            <td>PE, hedge funds</td>
+            <td>Content-first research</td>
+            <td>Multi-use, healthcare</td>
+            <td>PE, consulting, growth</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="map-note">All entries based on publicly available information. Scale figures are company-stated. Characterizations are editorial synthesis.</p>
+  </div>
+</section>
+
+<!-- ════════════ METHODOLOGY ════════════ -->
+<section id="methodology">
+  <div class="container">
+    <p class="section-label">Methodology</p>
+    <h2 class="section-title">Intelligence Sourcing &amp; Evidence Framework</h2>
+    <p class="section-subtitle">All intelligence is derived from public sources. No proprietary, confidential, or insider data is used.</p>
+
+    <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:1.5rem; line-height:1.6;">
+      Sources include: provider websites, product pages, press releases, newsroom updates, regulatory filings, market reports from Inex One, BRI, and Silverlight Research, and trusted third-party reporting. Change tracking is applied to public web properties where available.
+    </p>
+
+    <div class="evidence-grid">
+      <div class="evidence-card">
+        <span class="badge badge-verified">Verified</span>
+        <p>Confirmed through multiple independent public sources or official filings. Example: funding rounds disclosed in SEC filings and press coverage.</p>
+      </div>
+      <div class="evidence-card">
+        <span class="badge badge-stated">Company-Stated</span>
+        <p>Based on the provider's own disclosures — press releases, product pages, or executive statements. Not independently verified.</p>
+      </div>
+      <div class="evidence-card">
+        <span class="badge badge-inferred">Inferred Editorially</span>
+        <p>Synthesized from multiple data points but not directly confirmed. Requires analyst judgment. Labeled clearly as editorial assessment.</p>
+      </div>
+      <div class="evidence-card">
+        <span class="badge badge-weak">Weak Signal / Monitor</span>
+        <p>Early-stage indicators that may or may not materialize. Included for tracking purposes, not actionable without further confirmation.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ FOOTER ════════════ -->
+<footer>
+  <div class="container">
+    <p><strong>Prototype Intelligence Demo</strong></p>
+    <p style="margin-top:0.5rem;">
+      This is a standalone concept artifact built from public-source research on ExpertNetworks.net.<br>
+      It is not a live internal system, does not connect to a backend, and does not reflect proprietary data.<br>
+      Designed to illustrate how structured public-source intelligence can support market decision-making.
+    </p>
+    <p style="margin-top:1rem;">March 2026 — ExpertNetworks.net</p>
+  </div>
+</footer>
+
+<!-- ════════════ MINIMAL JS ════════════ -->
+<script>
+/* Smooth-scroll for nav links */
+document.querySelectorAll('nav a').forEach(function(link) {
+  link.addEventListener('click', function(e) {
+    var target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+</script>
+
+</body>
+</html>
