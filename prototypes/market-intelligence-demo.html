@@ -7,18 +7,24 @@
 <style>
 /* ── Variables ── */
 :root {
-  --bg: #121214;
-  --surface: #1c1c1e;
-  --surface-hover: #2c2c2e;
-  --border: rgba(255,255,255,0.08);
-  --border-strong: rgba(255,255,255,0.14);
-  --text: #f5f5f7;
-  --text-secondary: #a1a1a6;
-  --text-tertiary: #6e6e73;
-  --accent: #5e8fc9;
-  --accent-muted: rgba(94,143,201,0.15);
-  --radius: 12px;
-  --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --bg: #0d0d0f;
+  --bg-subtle: #131316;
+  --surface: rgba(255,255,255,0.04);
+  --surface-hover: rgba(255,255,255,0.07);
+  --border: rgba(255,255,255,0.06);
+  --border-strong: rgba(255,255,255,0.12);
+  --text: #f0f0f2;
+  --text-secondary: #9a9aa0;
+  --text-tertiary: #5a5a60;
+  --accent: #6699cc;
+  --accent-dim: #4a7aaa;
+  --accent-muted: rgba(102,153,204,0.12);
+  --radius: 14px;
+  --radius-sm: 8px;
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.3), 0 0 0 1px var(--border);
+  --shadow-card-hover: 0 4px 16px rgba(0,0,0,0.4), 0 0 0 1px var(--border-strong);
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ── Reset ── */
@@ -30,106 +36,137 @@ body {
   color: var(--text);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* ── Nav ── */
 nav {
   position: sticky; top: 0; z-index: 100;
-  background: rgba(18,18,20,0.85);
-  backdrop-filter: blur(16px);
+  background: rgba(13,13,15,0.82);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
   border-bottom: 1px solid var(--border);
   padding: 0 2rem;
 }
 nav ul {
-  display: flex; gap: 1.5rem; list-style: none;
+  display: flex; gap: 0.25rem; list-style: none;
   max-width: 1200px; margin: 0 auto;
   overflow-x: auto;
 }
 nav a {
-  display: block; padding: 0.75rem 0;
-  color: var(--text-secondary); text-decoration: none;
-  font-size: 0.8rem; font-weight: 500;
-  letter-spacing: 0.02em; white-space: nowrap;
-  transition: color 0.2s;
+  display: block; padding: 0.7rem 0.75rem;
+  color: var(--text-tertiary); text-decoration: none;
+  font-size: 0.78rem; font-weight: 500;
+  letter-spacing: 0.01em; white-space: nowrap;
+  border-radius: var(--radius-sm);
+  transition: color var(--transition), background var(--transition);
 }
-nav a:hover { color: var(--text); }
+nav a:hover { color: var(--text); background: rgba(255,255,255,0.05); }
 
 /* ── Layout ── */
-.container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
-section { padding: 4rem 0; }
+.container { max-width: 1120px; margin: 0 auto; padding: 0 2.5rem; }
+section { padding: 4.5rem 0; }
+section + section { border-top: 1px solid var(--border); }
+#hero + section { border-top: none; }
 .section-label {
-  font-size: 0.7rem; font-weight: 600;
-  letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--accent); margin-bottom: 0.5rem;
+  font-size: 0.68rem; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--accent-dim); margin-bottom: 0.75rem;
 }
 .section-title {
-  font-size: 1.75rem; font-weight: 600;
-  letter-spacing: -0.02em; margin-bottom: 0.5rem;
+  font-size: 1.6rem; font-weight: 600;
+  letter-spacing: -0.025em; margin-bottom: 0.5rem;
 }
 .section-subtitle {
-  color: var(--text-secondary); font-size: 0.95rem;
-  max-width: 640px; margin-bottom: 2rem;
+  color: var(--text-secondary); font-size: 0.9rem;
+  max-width: 580px; margin-bottom: 2.25rem;
+  line-height: 1.55;
 }
 
+/* ── Fade-in on scroll ── */
+.fade-in {
+  opacity: 0; transform: translateY(12px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+
 /* ── Hero ── */
-#hero { padding: 5rem 0 3rem; text-align: center; }
+#hero {
+  padding: 5.5rem 0 4rem; text-align: center;
+  background: linear-gradient(180deg, var(--bg-subtle) 0%, var(--bg) 100%);
+}
 #hero h1 {
-  font-size: clamp(2rem, 4vw, 3rem);
-  font-weight: 700; letter-spacing: -0.03em;
+  font-size: clamp(2.2rem, 4.5vw, 3.2rem);
+  font-weight: 700; letter-spacing: -0.035em;
   margin-bottom: 0.75rem;
+  line-height: 1.15;
 }
 #hero .subtitle {
-  color: var(--text-secondary); font-size: 1.1rem;
-  max-width: 640px; margin: 0 auto 1rem;
+  color: var(--text-secondary); font-size: 1.05rem;
+  max-width: 600px; margin: 0 auto 0.75rem;
+  line-height: 1.55;
 }
 #hero .context {
-  color: var(--text-tertiary); font-size: 0.85rem;
-  margin-bottom: 2.5rem;
+  color: var(--text-tertiary); font-size: 0.82rem;
+  margin-bottom: 2.75rem;
 }
 .stat-band {
-  display: flex; justify-content: center; gap: 1.5rem;
+  display: flex; justify-content: center; gap: 1rem;
   flex-wrap: wrap;
 }
 .stat-card {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 1.25rem 1.75rem; min-width: 180px;
+  padding: 1.25rem 2rem; min-width: 170px;
   text-align: center;
+  box-shadow: var(--shadow-card);
+  transition: box-shadow var(--transition), transform var(--transition);
+}
+.stat-card:hover {
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-1px);
 }
 .stat-card .number {
-  font-size: 1.75rem; font-weight: 700;
+  font-size: 1.8rem; font-weight: 700;
   color: var(--accent); letter-spacing: -0.02em;
 }
 .stat-card .label {
-  font-size: 0.75rem; color: var(--text-secondary);
-  margin-top: 0.25rem;
+  font-size: 0.72rem; color: var(--text-secondary);
+  margin-top: 0.3rem; letter-spacing: 0.01em;
 }
 
 /* ── Cards grid ── */
 .card-grid {
   display: grid; gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
 }
 .card {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 1.5rem;
-  transition: border-color 0.2s;
+  padding: 1.5rem 1.6rem;
+  box-shadow: var(--shadow-card);
+  transition: box-shadow var(--transition), transform var(--transition);
 }
-.card:hover { border-color: var(--border-strong); }
+.card:hover {
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-1px);
+}
 .card h3 {
-  font-size: 1rem; font-weight: 600;
-  margin-bottom: 0.5rem;
+  font-size: 0.92rem; font-weight: 600;
+  margin-bottom: 0.5rem; letter-spacing: -0.01em;
 }
 .card p {
-  font-size: 0.875rem; color: var(--text-secondary);
+  font-size: 0.84rem; color: var(--text-secondary);
   line-height: 1.55;
 }
 .card .so-what {
-  margin-top: 0.75rem; font-size: 0.8rem;
+  margin-top: 0.75rem; padding-top: 0.65rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.78rem;
   color: var(--accent); font-weight: 500;
+  line-height: 1.45;
 }
 
 /* ── Market Map ── */
@@ -142,21 +179,30 @@ section { padding: 4rem 0; }
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 1.25rem;
+  padding: 1.4rem 1.5rem;
+  box-shadow: var(--shadow-card);
+  transition: box-shadow var(--transition), transform var(--transition);
+}
+.quadrant-cell:hover {
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-1px);
 }
 .quadrant-cell h4 {
-  font-size: 0.85rem; font-weight: 600;
+  font-size: 0.78rem; font-weight: 600;
   margin-bottom: 0.75rem; color: var(--accent);
+  text-transform: uppercase; letter-spacing: 0.06em;
 }
 .quadrant-cell ul { list-style: none; }
 .quadrant-cell li {
-  font-size: 0.85rem; color: var(--text-secondary);
-  padding: 0.25rem 0;
+  font-size: 0.84rem; color: var(--text-secondary);
+  padding: 0.35rem 0;
+  border-bottom: 1px solid var(--border);
 }
+.quadrant-cell li:last-child { border-bottom: none; }
 .quadrant-cell li strong { color: var(--text); font-weight: 500; }
 .map-note {
-  font-size: 0.75rem; color: var(--text-tertiary);
-  margin-top: 1rem; font-style: italic;
+  font-size: 0.72rem; color: var(--text-tertiary);
+  margin-top: 1.25rem; font-style: italic;
 }
 
 /* ── Signals ── */
@@ -165,112 +211,133 @@ section { padding: 4rem 0; }
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 1.25rem 1.5rem;
+  padding: 1.3rem 1.5rem;
   display: grid;
-  grid-template-columns: 90px 1fr;
-  gap: 1rem;
-  transition: border-color 0.2s;
+  grid-template-columns: 88px 1fr;
+  gap: 1.25rem;
+  box-shadow: var(--shadow-card);
+  transition: box-shadow var(--transition), transform var(--transition);
 }
-.signal:hover { border-color: var(--border-strong); }
+.signal:hover {
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-1px);
+}
 .signal-meta {
   font-size: 0.75rem; color: var(--text-tertiary);
-  display: flex; flex-direction: column; gap: 0.25rem;
-  padding-top: 0.1rem;
+  display: flex; flex-direction: column; gap: 0.35rem;
+  padding-top: 0.15rem;
 }
-.signal-meta .date { color: var(--text-secondary); font-weight: 500; }
+.signal-meta .date { color: var(--text-secondary); font-weight: 600; font-size: 0.8rem; }
 .signal-tag {
   display: inline-block;
   background: var(--accent-muted);
   color: var(--accent);
-  font-size: 0.65rem; font-weight: 600;
-  padding: 0.15rem 0.5rem;
-  border-radius: 4px;
+  font-size: 0.62rem; font-weight: 600;
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-sm);
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
   width: fit-content;
 }
 .signal-body h4 {
-  font-size: 0.9rem; font-weight: 600;
-  margin-bottom: 0.35rem;
+  font-size: 0.88rem; font-weight: 600;
+  margin-bottom: 0.3rem; letter-spacing: -0.01em;
 }
 .signal-body p {
   font-size: 0.82rem; color: var(--text-secondary);
   line-height: 1.5;
 }
 .signal-body .implication {
-  font-size: 0.78rem; color: var(--accent);
+  font-size: 0.78rem; color: var(--accent-dim);
   margin-top: 0.5rem; font-weight: 500;
+  padding-top: 0.45rem; border-top: 1px solid var(--border);
+  line-height: 1.4;
 }
 
 /* ── Comparison matrix ── */
-.matrix-wrapper { overflow-x: auto; }
+.matrix-wrapper {
+  overflow-x: auto;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-card);
+}
 table.matrix {
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
+  border-collapse: collapse;
   font-size: 0.8rem;
 }
 table.matrix th, table.matrix td {
-  padding: 0.75rem 1rem;
+  padding: 0.7rem 0.9rem;
   border-bottom: 1px solid var(--border);
   text-align: left; vertical-align: top;
 }
 table.matrix th {
-  background: var(--surface);
-  color: var(--text-secondary);
-  font-weight: 600; font-size: 0.7rem;
-  text-transform: uppercase; letter-spacing: 0.05em;
+  background: rgba(255,255,255,0.03);
+  color: var(--text-tertiary);
+  font-weight: 600; font-size: 0.68rem;
+  text-transform: uppercase; letter-spacing: 0.06em;
   position: sticky; top: 42px;
 }
-table.matrix td { color: var(--text-secondary); }
+table.matrix td { color: var(--text-secondary); font-size: 0.79rem; }
 table.matrix td:first-child {
   color: var(--text); font-weight: 500;
   white-space: nowrap;
 }
-table.matrix tr:hover td { background: rgba(255,255,255,0.02); }
+table.matrix tbody tr { transition: background var(--transition); }
+table.matrix tbody tr:hover td { background: rgba(255,255,255,0.025); }
+table.matrix tbody tr:last-child td { border-bottom: none; }
 
 /* ── Methodology ── */
 .evidence-grid {
-  display: grid; gap: 0.75rem;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  display: grid; gap: 1rem;
+  grid-template-columns: repeat(4, 1fr);
 }
 .evidence-card {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 1.25rem;
+  padding: 1.25rem 1.3rem;
+  box-shadow: var(--shadow-card);
 }
 .evidence-card .badge {
   display: inline-block;
-  font-size: 0.65rem; font-weight: 700;
+  font-size: 0.62rem; font-weight: 700;
   text-transform: uppercase; letter-spacing: 0.06em;
-  padding: 0.2rem 0.6rem;
-  border-radius: 4px;
-  margin-bottom: 0.5rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-sm);
+  margin-bottom: 0.6rem;
 }
-.badge-verified { background: #1a3a2a; color: #4ade80; }
-.badge-stated { background: #1a2a3a; color: #60a5fa; }
-.badge-inferred { background: #2a2a1a; color: #facc15; }
-.badge-weak { background: #2a1a1a; color: #a1a1a6; }
+.badge-verified { background: rgba(74,222,128,0.1); color: #4ade80; }
+.badge-stated { background: rgba(96,165,250,0.1); color: #60a5fa; }
+.badge-inferred { background: rgba(250,204,21,0.1); color: #facc15; }
+.badge-weak { background: rgba(161,161,166,0.08); color: #8a8a90; }
 .evidence-card p {
-  font-size: 0.82rem; color: var(--text-secondary);
+  font-size: 0.8rem; color: var(--text-secondary);
   line-height: 1.5;
 }
 
 /* ── Footer ── */
 footer {
   border-top: 1px solid var(--border);
-  padding: 3rem 0; text-align: center;
-  color: var(--text-tertiary); font-size: 0.8rem;
+  padding: 3.5rem 0; text-align: center;
+  color: var(--text-tertiary); font-size: 0.78rem;
+  line-height: 1.65;
 }
-footer strong { color: var(--text-secondary); font-weight: 500; }
+footer strong { color: var(--text-secondary); font-weight: 600; letter-spacing: 0.02em; }
 
 /* ── Responsive ── */
-@media (max-width: 700px) {
+@media (max-width: 768px) {
+  .container { padding: 0 1.25rem; }
+  .card-grid { grid-template-columns: 1fr; }
   .quadrant-grid { grid-template-columns: 1fr; }
+  .evidence-grid { grid-template-columns: 1fr 1fr; }
   .signal { grid-template-columns: 1fr; }
   .stat-band { flex-direction: column; align-items: center; }
-  nav ul { gap: 1rem; }
+  nav ul { gap: 0; }
+  section { padding: 3rem 0; }
+}
+@media (max-width: 480px) {
+  .evidence-grid { grid-template-columns: 1fr; }
 }
 
 /* ── Print ── */
@@ -335,28 +402,28 @@ footer strong { color: var(--text-secondary); font-weight: 500; }
     <p class="section-subtitle">Four structural dynamics shaping the expert network market in 2025–2026.</p>
     <div class="card-grid">
 
-      <div class="card">
-        <h3>Market Structure Is Consolidating</h3>
-        <p>The industry has grown to an estimated $2.5–5B depending on methodology, with 11,200+ companies using expert networks globally. A core tier of roughly 15 institutional-grade firms handles the majority of volume, while dozens of niche and regional players serve specific verticals or geographies.</p>
-        <div class="so-what">Implication: Scale advantages are compounding — smaller firms face margin and access pressure.</div>
+      <div class="card fade-in">
+        <h3>Market Consolidation</h3>
+        <p>An estimated $2.5–5B market with 11,200+ corporate users. Roughly 15 institutional-grade firms handle most volume; dozens of niche players serve specific verticals.</p>
+        <div class="so-what">Scale advantages are compounding — smaller firms face margin pressure.</div>
       </div>
 
-      <div class="card">
-        <h3>AI Is Reshaping the Competitive Stack</h3>
-        <p>Every major provider shipped AI features between 2024–2026. AlphaSense reached $500M ARR with agentic research tools. GLG, Guidepoint, and Dialectica each launched AI-assisted matching, synthesis, or workflow products. AI is moving from differentiator to table stakes.</p>
-        <div class="so-what">Implication: Buyer expectations for AI-augmented delivery are accelerating faster than most providers can ship.</div>
+      <div class="card fade-in">
+        <h3>AI Is Now Table Stakes</h3>
+        <p>Every major provider shipped AI features in 2024–2026. AlphaSense hit $500M ARR with agentic tools. GLG, Guidepoint, and Dialectica each launched AI matching or synthesis products.</p>
+        <div class="so-what">Buyer expectations for AI-augmented delivery are outpacing provider roadmaps.</div>
       </div>
 
-      <div class="card">
-        <h3>Transcript &amp; Content Assets Are a Battleground</h3>
-        <p>Third Bridge distributes its library through six AI partners. AlphaSense claims 240K+ transcripts across 500M+ documents. Content-rich models create recurring usage and switching costs that call-only providers struggle to match.</p>
-        <div class="so-what">Implication: Firms without a content asset will increasingly compete on price and speed alone.</div>
+      <div class="card fade-in">
+        <h3>Content &amp; Transcript Arms Race</h3>
+        <p>Third Bridge distributes its library through six AI partners. AlphaSense claims 240K+ transcripts. Content-rich models create switching costs that call-only providers cannot match.</p>
+        <div class="so-what">Providers without a content asset will compete on price and speed alone.</div>
       </div>
 
-      <div class="card">
-        <h3>Buyer Sophistication Is Increasing</h3>
-        <p>PE firms, consultancies, and corporate strategy teams now compare providers across compliance posture, AI tooling, vertical depth, and integration fit — not just cost per call. Procurement is becoming more structured and multi-vendor.</p>
-        <div class="so-what">Implication: Transparent comparison and compliance credibility are now buying criteria, not afterthoughts.</div>
+      <div class="card fade-in">
+        <h3>Buyer Procurement Is Maturing</h3>
+        <p>PE firms and corporate strategy teams now evaluate providers across compliance, AI tooling, vertical depth, and integration fit — not just cost per call.</p>
+        <div class="so-what">Transparent comparison and compliance credibility are buying criteria, not afterthoughts.</div>
       </div>
 
     </div>
@@ -369,7 +436,7 @@ footer strong { color: var(--text-secondary); font-weight: 500; }
     <p class="section-label">Market Map</p>
     <h2 class="section-title">Landscape Segmentation</h2>
     <p class="section-subtitle">Editorial synthesis of the competitive landscape across service model and platform capability.</p>
-    <div class="quadrant-grid">
+    <div class="quadrant-grid fade-in">
 
       <div class="quadrant-cell">
         <h4>Global Full-Service Leaders</h4>
@@ -422,7 +489,7 @@ footer strong { color: var(--text-secondary); font-weight: 500; }
     <p class="section-label">Intelligence Stream</p>
     <h2 class="section-title">Recent Competitor Signals</h2>
     <p class="section-subtitle">Select public-source signals illustrating market movement. Each labeled as editorial synthesis.</p>
-    <div class="signal-list">
+    <div class="signal-list fade-in">
 
       <div class="signal">
         <div class="signal-meta">
@@ -431,8 +498,8 @@ footer strong { color: var(--text-secondary); font-weight: 500; }
         </div>
         <div class="signal-body">
           <h4>AlphaSense reaches $500M ARR, launches agentic Deep Research</h4>
-          <p>AlphaSense disclosed $500M in annual recurring revenue and launched Deep Research, an agentic workflow product, alongside AI-driven Channel Checks that automate expert interviewing at scale.</p>
-          <div class="implication">Raises the ceiling for what buyers expect from a research platform — providers without agentic capabilities may face repositioning pressure.</div>
+          <p>Disclosed $500M ARR. Launched Deep Research (agentic workflows) and AI-driven Channel Checks that automate expert interviewing.</p>
+          <div class="implication">Raises the ceiling for buyer expectations — providers without agentic capabilities face repositioning pressure.</div>
         </div>
       </div>
 
@@ -443,8 +510,8 @@ footer strong { color: var(--text-secondary); font-weight: 500; }
         </div>
         <div class="signal-body">
           <h4>Guidepoint launches Guidepoint360 and AskGP</h4>
-          <p>Guidepoint released its unified platform Guidepoint360 with AskGP, an AI assistant for cross-transcript search and synthesis, plus AI-powered compliance moderation.</p>
-          <div class="implication">Signals that traditional concierge providers are investing heavily in platform parity — the concierge-vs-platform distinction is blurring.</div>
+          <p>Unified platform launch with AskGP (AI cross-transcript search and synthesis) and AI-powered compliance moderation.</p>
+          <div class="implication">Traditional concierge providers investing heavily in platform parity — the concierge-vs-platform line is blurring.</div>
         </div>
       </div>
 
@@ -455,8 +522,8 @@ footer strong { color: var(--text-secondary); font-weight: 500; }
         </div>
         <div class="signal-body">
           <h4>Third Bridge opens content distribution to six AI partners</h4>
-          <p>Third Bridge made its research library available through Claude, Aiera, Hebbia, Portrait Analytics, Finster, and Rogo — a notable shift toward open distribution of expert-derived content.</p>
-          <div class="implication">Content owners may gain leverage by becoming upstream data suppliers to multiple AI platforms — a new monetization and moat strategy.</div>
+          <p>Research library now available through Claude, Aiera, Hebbia, Portrait Analytics, Finster, and Rogo — a shift toward open content distribution.</p>
+          <div class="implication">Content owners can become upstream data suppliers to AI platforms — a new moat and monetization strategy.</div>
         </div>
       </div>
 
@@ -467,8 +534,8 @@ footer strong { color: var(--text-secondary); font-weight: 500; }
         </div>
         <div class="signal-body">
           <h4>Dialectica surpasses $100M revenue with 1,400 employees</h4>
-          <p>Dialectica reported exceeding $100M in revenue, maintaining a 70% lifetime CAGR over five consecutive years on the FT 1000. The firm also appointed Jason Howard (ex-Tegus GC, 13 years SEC) as Chief Legal Officer.</p>
-          <div class="implication">Growth-stage firm maturing into institutional credibility — the compliance hire signals readiness for larger, more regulated enterprise accounts.</div>
+          <p>Exceeded $100M revenue, 70% lifetime CAGR, five consecutive FT 1000 appearances. Appointed Jason Howard (ex-Tegus GC, 13 years SEC) as CLO.</p>
+          <div class="implication">Growth-stage firm maturing into institutional credibility — compliance hire signals readiness for regulated enterprise accounts.</div>
         </div>
       </div>
 
@@ -479,8 +546,8 @@ footer strong { color: var(--text-secondary); font-weight: 500; }
         </div>
         <div class="signal-body">
           <h4>AlphaSights raises $400M at $4.2B valuation</h4>
-          <p>AlphaSights closed a $400M capital raise valuing the firm at $4.2B, underscoring investor confidence in the expert network model. The firm was also named an FT Growth Champion for 2026.</p>
-          <div class="implication">Validates the market thesis at scale — signals that expert networks are attracting growth-equity capital typically reserved for enterprise SaaS.</div>
+          <p>Closed $400M raise at $4.2B valuation. Named FT Growth Champion 2026, reporting 70% CAGR.</p>
+          <div class="implication">Validates the market thesis at scale — expert networks attracting growth-equity capital typically reserved for enterprise SaaS.</div>
         </div>
       </div>
 
@@ -491,8 +558,8 @@ footer strong { color: var(--text-secondary); font-weight: 500; }
         </div>
         <div class="signal-body">
           <h4>Capvision HKEX IPO stalled following CCTV regulatory investigation</h4>
-          <p>Capvision's planned Hong Kong IPO was paused after a CCTV broadcast investigated the firm's operations in mainland China, highlighting regulatory risks for cross-border expert network providers.</p>
-          <div class="implication">Geopolitical and regulatory exposure is a material competitive variable — compliance credibility matters more in cross-border contexts.</div>
+          <p>Planned HKEX IPO paused after CCTV investigated mainland China operations — highlighting regulatory risk for cross-border expert network providers.</p>
+          <div class="implication">Geopolitical exposure is a material competitive variable — compliance credibility matters more in cross-border contexts.</div>
         </div>
       </div>
 
@@ -506,7 +573,7 @@ footer strong { color: var(--text-secondary); font-weight: 500; }
     <p class="section-label">Competitive Framework</p>
     <h2 class="section-title">Advantage Stack by Dimension</h2>
     <p class="section-subtitle">How the top five providers differentiate across key buyer-relevant dimensions. Based on public disclosures and editorial assessment.</p>
-    <div class="matrix-wrapper">
+    <div class="matrix-wrapper fade-in">
       <table class="matrix">
         <thead>
           <tr>
@@ -589,26 +656,26 @@ footer strong { color: var(--text-secondary); font-weight: 500; }
     <h2 class="section-title">Intelligence Sourcing &amp; Evidence Framework</h2>
     <p class="section-subtitle">All intelligence is derived from public sources. No proprietary, confidential, or insider data is used.</p>
 
-    <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:1.5rem; line-height:1.6;">
-      Sources include: provider websites, product pages, press releases, newsroom updates, regulatory filings, market reports from Inex One, BRI, and Silverlight Research, and trusted third-party reporting. Change tracking is applied to public web properties where available.
+    <p style="font-size:0.84rem; color:var(--text-secondary); margin-bottom:1.75rem; line-height:1.6;">
+      Sources: provider websites, product pages, press releases, regulatory filings, market reports (Inex One, BRI, Silverlight Research), and third-party reporting. Web-property change tracking applied where available.
     </p>
 
-    <div class="evidence-grid">
+    <div class="evidence-grid fade-in">
       <div class="evidence-card">
         <span class="badge badge-verified">Verified</span>
-        <p>Confirmed through multiple independent public sources or official filings. Example: funding rounds disclosed in SEC filings and press coverage.</p>
+        <p>Confirmed through multiple independent public sources or official filings.</p>
       </div>
       <div class="evidence-card">
         <span class="badge badge-stated">Company-Stated</span>
-        <p>Based on the provider's own disclosures — press releases, product pages, or executive statements. Not independently verified.</p>
+        <p>Provider's own disclosures — press releases, product pages, executive statements. Not independently verified.</p>
       </div>
       <div class="evidence-card">
         <span class="badge badge-inferred">Inferred Editorially</span>
-        <p>Synthesized from multiple data points but not directly confirmed. Requires analyst judgment. Labeled clearly as editorial assessment.</p>
+        <p>Synthesized from multiple data points, not directly confirmed. Requires analyst judgment.</p>
       </div>
       <div class="evidence-card">
         <span class="badge badge-weak">Weak Signal / Monitor</span>
-        <p>Early-stage indicators that may or may not materialize. Included for tracking purposes, not actionable without further confirmation.</p>
+        <p>Early indicators that may not materialize. Tracked for awareness, not actionable without confirmation.</p>
       </div>
     </div>
   </div>
@@ -638,6 +705,20 @@ document.querySelectorAll('nav a').forEach(function(link) {
       target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   });
+});
+
+/* Lightweight fade-in on scroll */
+var observer = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.fade-in').forEach(function(el) {
+  observer.observe(el);
 });
 </script>
 
