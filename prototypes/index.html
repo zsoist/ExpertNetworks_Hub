@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Executive Demo Package — ExpertNetworks.net</title>
+<style>
+:root {
+  --bg: #0d0d0f;
+  --bg-subtle: #131316;
+  --surface: rgba(255,255,255,0.04);
+  --surface-hover: rgba(255,255,255,0.07);
+  --border: rgba(255,255,255,0.06);
+  --border-strong: rgba(255,255,255,0.12);
+  --text: #f0f0f2;
+  --text-secondary: #9a9aa0;
+  --text-tertiary: #5a5a60;
+  --accent: #6699cc;
+  --accent-dim: #4a7aaa;
+  --accent-muted: rgba(102,153,204,0.12);
+  --green: #4ade80;
+  --green-muted: rgba(74,222,128,0.1);
+  --radius: 14px;
+  --radius-sm: 8px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.3), 0 0 0 1px var(--border);
+  --shadow-hover: 0 4px 16px rgba(0,0,0,0.4), 0 0 0 1px var(--border-strong);
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --ease: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.container { max-width: 860px; margin: 0 auto; padding: 0 2.5rem; width: 100%; }
+
+/* ── Hero ── */
+.hero {
+  padding: 6rem 0 4.5rem;
+  text-align: center;
+  background: linear-gradient(180deg, var(--bg-subtle) 0%, var(--bg) 100%);
+}
+.hero-label {
+  font-size: 0.68rem; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--accent-dim); margin-bottom: 0.75rem;
+}
+.hero h1 {
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 700; letter-spacing: -0.035em;
+  line-height: 1.15; margin-bottom: 0.75rem;
+}
+.hero .subtitle {
+  color: var(--text-secondary); font-size: 1rem;
+  max-width: 540px; margin: 0 auto 0.6rem;
+  line-height: 1.55;
+}
+.hero .context {
+  color: var(--text-tertiary); font-size: 0.8rem;
+}
+
+/* ── Demo cards ── */
+.demos {
+  padding: 4rem 0;
+}
+.demos-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+.demo-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.75rem 1.75rem 1.5rem;
+  box-shadow: var(--shadow);
+  transition: box-shadow var(--ease), transform var(--ease);
+  display: flex;
+  flex-direction: column;
+}
+.demo-card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-2px);
+}
+.demo-badge {
+  display: inline-block;
+  font-size: 0.6rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  padding: 0.2rem 0.55rem; border-radius: var(--radius-sm);
+  margin-bottom: 0.7rem; width: fit-content;
+}
+.demo-badge-blue { background: var(--accent-muted); color: var(--accent); }
+.demo-badge-green { background: var(--green-muted); color: var(--green); }
+.demo-card h2 {
+  font-size: 1.05rem; font-weight: 600;
+  letter-spacing: -0.02em; margin-bottom: 0.4rem;
+}
+.demo-card p {
+  font-size: 0.84rem; color: var(--text-secondary);
+  line-height: 1.55; margin-bottom: 1.25rem;
+  flex-grow: 1;
+}
+.demo-btn {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  background: var(--surface-hover);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  padding: 0.55rem 1.1rem;
+  color: var(--text); font-size: 0.8rem; font-weight: 500;
+  text-decoration: none; width: fit-content;
+  transition: background var(--ease), border-color var(--ease);
+  letter-spacing: 0.01em;
+}
+.demo-btn:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.2);
+}
+.demo-btn .arrow {
+  font-size: 0.75rem; opacity: 0.5;
+  transition: transform var(--ease), opacity var(--ease);
+}
+.demo-btn:hover .arrow {
+  transform: translateX(2px); opacity: 0.8;
+}
+
+/* ── How to use ── */
+.usage {
+  padding: 3.5rem 0 4rem;
+  border-top: 1px solid var(--border);
+}
+.section-label {
+  font-size: 0.68rem; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--accent-dim); margin-bottom: 0.6rem;
+}
+.usage h2 {
+  font-size: 1.3rem; font-weight: 600;
+  letter-spacing: -0.02em; margin-bottom: 1.25rem;
+}
+.steps {
+  display: flex; flex-direction: column;
+  gap: 0.6rem; max-width: 580px;
+}
+.step {
+  display: flex; align-items: flex-start; gap: 0.85rem;
+}
+.step-num {
+  font-size: 0.62rem; font-weight: 700;
+  color: var(--accent); background: var(--accent-muted);
+  width: 24px; height: 24px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 0.1rem;
+}
+.step-text {
+  font-size: 0.84rem; color: var(--text-secondary);
+  line-height: 1.5;
+}
+.step-text strong {
+  color: var(--text); font-weight: 600;
+}
+
+/* ── Footer ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 3rem 0; text-align: center;
+  color: var(--text-tertiary); font-size: 0.76rem;
+  line-height: 1.65; margin-top: auto;
+}
+footer strong {
+  color: var(--text-secondary); font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* ── Fade-in ── */
+.fade-in {
+  opacity: 0; transform: translateY(12px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .container { padding: 0 1.25rem; }
+  .demos-grid { grid-template-columns: 1fr; }
+  .hero { padding: 4rem 0 3rem; }
+  .demos { padding: 3rem 0; }
+  .usage { padding: 2.5rem 0 3rem; }
+}
+
+/* ── Print ── */
+@media print {
+  body { background: #fff; color: #111; }
+  .demo-card { background: #f8f8f8; border-color: #ddd; break-inside: avoid; }
+  :root { --accent: #2563eb; --text-secondary: #555; --text-tertiary: #888; }
+}
+</style>
+</head>
+<body>
+
+<!-- ════════ HERO ════════ -->
+<section class="hero">
+  <div class="container">
+    <p class="hero-label">Executive Demo Package</p>
+    <h1>ExpertNetworks.net Prototypes</h1>
+    <p class="subtitle">Two interactive prototypes demonstrating public-source intelligence methodology for the expert network industry.</p>
+    <p class="context">Conceptual demos — workflow logic and editorial frameworks, not production systems.</p>
+  </div>
+</section>
+
+<!-- ════════ DEMOS ════════ -->
+<section class="demos">
+  <div class="container">
+    <div class="demos-grid fade-in">
+
+      <div class="demo-card">
+        <span class="demo-badge demo-badge-blue">Intelligence Brief</span>
+        <h2>Market Intelligence / OSINT Brief</h2>
+        <p>Interactive walkthrough of the competitive intelligence methodology — source framework, signal processing, verification rubric, and example output artifacts.</p>
+        <a href="./market-intelligence-demo.html" class="demo-btn">Open demo <span class="arrow">→</span></a>
+      </div>
+
+      <div class="demo-card">
+        <span class="demo-badge demo-badge-green">Operating Model</span>
+        <h2>Automation Operating Model</h2>
+        <p>How the recurring intelligence workflow collects, verifies, and synthesizes signals — weekly cadence, agent architecture, and human-review layer.</p>
+        <a href="./automation-operating-model-demo.html" class="demo-btn">Open demo <span class="arrow">→</span></a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════ HOW TO USE ════════ -->
+<section class="usage">
+  <div class="container">
+    <p class="section-label">Recommended Flow</p>
+    <h2>How to use this package</h2>
+    <div class="steps fade-in">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-text"><strong>Start with the Intelligence Brief</strong> — it introduces the methodology, source framework, and the kind of output the system produces.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-text"><strong>Then open the Operating Model</strong> — it shows how collection, verification, and synthesis run as a structured weekly cycle.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-text"><strong>Use both as discussion anchors</strong> — each section is independently scrollable and designed for screen-sharing at 1440px.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ FOOTER ════════ -->
+<footer>
+  <div class="container">
+    <p><strong>Prototype Demo Suite</strong></p>
+    <p style="margin-top:0.4rem;">
+      Based on public-source research logic for the expert network industry.<br>
+      Not a live internal system, admin panel, or production platform.
+    </p>
+    <p style="margin-top:0.75rem;">March 2026 — ExpertNetworks.net</p>
+  </div>
+</footer>
+
+<script>
+var observer = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.fade-in').forEach(function(el) {
+  observer.observe(el);
+});
+</script>
+
+</body>
+</html>
