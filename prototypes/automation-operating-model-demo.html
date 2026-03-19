@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Automation Operating Model — Prototype</title>
+<style>
+/* ── Variables ── */
+:root {
+  --bg: #0d0d0f;
+  --bg-subtle: #131316;
+  --surface: rgba(255,255,255,0.04);
+  --surface-hover: rgba(255,255,255,0.07);
+  --border: rgba(255,255,255,0.06);
+  --border-strong: rgba(255,255,255,0.12);
+  --text: #f0f0f2;
+  --text-secondary: #9a9aa0;
+  --text-tertiary: #5a5a60;
+  --accent: #6699cc;
+  --accent-dim: #4a7aaa;
+  --accent-muted: rgba(102,153,204,0.12);
+  --green: #4ade80;
+  --green-muted: rgba(74,222,128,0.1);
+  --amber: #facc15;
+  --amber-muted: rgba(250,204,21,0.1);
+  --radius: 14px;
+  --radius-sm: 8px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.3), 0 0 0 1px var(--border);
+  --shadow-hover: 0 4px 16px rgba(0,0,0,0.4), 0 0 0 1px var(--border-strong);
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --ease: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Nav ── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(13,13,15,0.82);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+}
+nav ul {
+  display: flex; gap: 0.25rem; list-style: none;
+  max-width: 1120px; margin: 0 auto;
+  overflow-x: auto;
+}
+nav a {
+  display: block; padding: 0.7rem 0.75rem;
+  color: var(--text-tertiary); text-decoration: none;
+  font-size: 0.78rem; font-weight: 500;
+  letter-spacing: 0.01em; white-space: nowrap;
+  border-radius: var(--radius-sm);
+  transition: color var(--ease), background var(--ease);
+}
+nav a:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+
+/* ── Layout ── */
+.container { max-width: 1120px; margin: 0 auto; padding: 0 2.5rem; }
+section { padding: 4.5rem 0; }
+section + section { border-top: 1px solid var(--border); }
+#hero + section { border-top: none; }
+.section-label {
+  font-size: 0.68rem; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--accent-dim); margin-bottom: 0.75rem;
+}
+.section-title {
+  font-size: 1.6rem; font-weight: 600;
+  letter-spacing: -0.025em; margin-bottom: 0.5rem;
+}
+.section-sub {
+  color: var(--text-secondary); font-size: 0.9rem;
+  max-width: 580px; margin-bottom: 2.25rem;
+  line-height: 1.55;
+}
+
+/* ── Hero ── */
+#hero {
+  padding: 5.5rem 0 4rem; text-align: center;
+  background: linear-gradient(180deg, var(--bg-subtle) 0%, var(--bg) 100%);
+}
+#hero h1 {
+  font-size: clamp(2.2rem, 4.5vw, 3.2rem);
+  font-weight: 700; letter-spacing: -0.035em;
+  margin-bottom: 0.75rem; line-height: 1.15;
+}
+#hero .subtitle {
+  color: var(--text-secondary); font-size: 1.05rem;
+  max-width: 620px; margin: 0 auto 0.75rem; line-height: 1.55;
+}
+#hero .context {
+  color: var(--text-tertiary); font-size: 0.82rem;
+  margin-bottom: 3rem;
+}
+
+/* ── Flow strip ── */
+.flow-strip {
+  display: flex; align-items: center; justify-content: center;
+  gap: 0; flex-wrap: wrap;
+  margin: 0 auto; max-width: 720px;
+}
+.flow-step {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 0.6rem 1.1rem;
+  font-size: 0.78rem; font-weight: 500;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+.flow-step:first-child { border-radius: var(--radius) 0 0 var(--radius); }
+.flow-step:last-child { border-radius: 0 var(--radius) var(--radius) 0; }
+.flow-arrow {
+  color: var(--text-tertiary); font-size: 0.7rem;
+  padding: 0 0.15rem;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 0.6rem 0.4rem;
+  line-height: 1;
+}
+
+/* ── Cards ── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem 1.6rem;
+  box-shadow: var(--shadow);
+  transition: box-shadow var(--ease), transform var(--ease);
+}
+.card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-1px);
+}
+.card h3 {
+  font-size: 0.92rem; font-weight: 600;
+  margin-bottom: 0.5rem; letter-spacing: -0.01em;
+}
+.card p, .card li {
+  font-size: 0.84rem; color: var(--text-secondary);
+  line-height: 1.55;
+}
+.two-col {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+}
+.card-label {
+  font-size: 0.65rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--accent-dim); margin-bottom: 0.4rem;
+}
+.card ul { list-style: none; padding: 0; }
+.card li { padding: 0.2rem 0; }
+.card li::before {
+  content: "·"; color: var(--text-tertiary);
+  margin-right: 0.5rem; font-weight: 700;
+}
+.card-divider {
+  border: none; border-top: 1px solid var(--border);
+  margin: 0.75rem 0;
+}
+
+/* ── Timeline ── */
+.timeline {
+  position: relative;
+  padding-left: 2rem;
+  max-width: 640px;
+}
+.timeline::before {
+  content: "";
+  position: absolute; left: 7px; top: 6px; bottom: 6px;
+  width: 1px; background: var(--border-strong);
+}
+.tl-step {
+  position: relative;
+  padding: 0 0 1.75rem 1rem;
+}
+.tl-step:last-child { padding-bottom: 0; }
+.tl-dot {
+  position: absolute; left: -2rem; top: 3px;
+  width: 15px; height: 15px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid var(--accent-dim);
+}
+.tl-step.active .tl-dot {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.tl-label {
+  font-size: 0.85rem; font-weight: 600;
+  margin-bottom: 0.2rem;
+}
+.tl-desc {
+  font-size: 0.8rem; color: var(--text-secondary);
+  line-height: 1.45;
+}
+.tl-time {
+  font-size: 0.7rem; color: var(--text-tertiary);
+  margin-top: 0.15rem;
+}
+
+/* ── Layer stack ── */
+.layer-stack {
+  display: flex; flex-direction: column; gap: 0.5rem;
+  max-width: 640px;
+}
+.layer {
+  display: flex; align-items: center; gap: 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.85rem 1.2rem;
+  box-shadow: var(--shadow);
+}
+.layer-num {
+  font-size: 0.65rem; font-weight: 700;
+  color: var(--accent); background: var(--accent-muted);
+  width: 24px; height: 24px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.layer-title {
+  font-size: 0.84rem; font-weight: 600;
+  flex-shrink: 0; min-width: 120px;
+}
+.layer-desc {
+  font-size: 0.78rem; color: var(--text-secondary);
+}
+
+/* ── Rubric table ── */
+.rubric-table {
+  width: 100%; border-collapse: collapse;
+  font-size: 0.8rem; max-width: 720px;
+}
+.rubric-table th, .rubric-table td {
+  padding: 0.65rem 0.9rem;
+  border-bottom: 1px solid var(--border);
+  text-align: left; vertical-align: top;
+}
+.rubric-table th {
+  background: rgba(255,255,255,0.03);
+  color: var(--text-tertiary);
+  font-weight: 600; font-size: 0.68rem;
+  text-transform: uppercase; letter-spacing: 0.06em;
+}
+.rubric-table td { color: var(--text-secondary); }
+.rubric-table td:first-child { color: var(--text); font-weight: 500; }
+.rubric-table tbody tr:last-child td { border-bottom: none; }
+.rubric-wrap {
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+/* ── Badge ── */
+.badge {
+  display: inline-block;
+  font-size: 0.62rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  padding: 0.2rem 0.55rem; border-radius: var(--radius-sm);
+}
+.badge-green { background: var(--green-muted); color: var(--green); }
+.badge-amber { background: var(--amber-muted); color: var(--amber); }
+.badge-blue { background: var(--accent-muted); color: var(--accent); }
+
+/* ── Output examples ── */
+.output-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem;
+}
+.output-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.2rem 1.3rem;
+  box-shadow: var(--shadow);
+}
+.output-card h4 {
+  font-size: 0.82rem; font-weight: 600;
+  margin-bottom: 0.35rem;
+}
+.output-card p {
+  font-size: 0.78rem; color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* ── Note ── */
+.note {
+  font-size: 0.72rem; color: var(--text-tertiary);
+  font-style: italic; margin-top: 1.25rem;
+}
+
+/* ── Footer ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 3.5rem 0; text-align: center;
+  color: var(--text-tertiary); font-size: 0.78rem; line-height: 1.65;
+}
+footer strong { color: var(--text-secondary); font-weight: 600; letter-spacing: 0.02em; }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .container { padding: 0 1.25rem; }
+  .two-col { grid-template-columns: 1fr; }
+  .output-grid { grid-template-columns: 1fr 1fr; }
+  .flow-strip { flex-wrap: wrap; justify-content: center; }
+  .layer { flex-direction: column; align-items: flex-start; gap: 0.35rem; }
+  .layer-title { min-width: unset; }
+  section { padding: 3rem 0; }
+  nav ul { gap: 0; }
+}
+@media (max-width: 480px) {
+  .output-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Print ── */
+@media print {
+  nav { display: none; }
+  body { background: #fff; color: #111; }
+  .card, .layer, .output-card, .rubric-wrap {
+    background: #f8f8f8; border-color: #ddd; break-inside: avoid;
+  }
+  :root { --accent: #2563eb; --text-secondary: #555; --text-tertiary: #888; }
+}
+</style>
+</head>
+<body>
+
+<!-- ════════ NAV ════════ -->
+<nav>
+  <ul>
+    <li><a href="#hero">Overview</a></li>
+    <li><a href="#outputs-what">What It Produces</a></li>
+    <li><a href="#cycle">Saturday Cycle</a></li>
+    <li><a href="#architecture">Agent Architecture</a></li>
+    <li><a href="#rubric">Verification</a></li>
+    <li><a href="#human">Human Review</a></li>
+    <li><a href="#artifacts">Output Artifacts</a></li>
+  </ul>
+</nav>
+
+<!-- ════════ HERO ════════ -->
+<section id="hero">
+  <div class="container">
+    <p class="section-label">Prototype Operating Model</p>
+    <h1>Automation Operating Model</h1>
+    <p class="subtitle">How a recurring intelligence workflow collects, verifies, and synthesizes public-source signals into structured competitive intelligence for the expert network industry.</p>
+    <p class="context">Conceptual prototype — illustrates workflow logic, not a production orchestration system.</p>
+    <div class="flow-strip">
+      <div class="flow-step">Sources</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">Collection</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">Verification</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">Synthesis</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">Output</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">Review</div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ WHAT IT PRODUCES ════════ -->
+<section id="outputs-what">
+  <div class="container">
+    <p class="section-label">What the System Produces</p>
+    <h2 class="section-title">Two recurring analysis outputs</h2>
+    <p class="section-sub">Each runs on a weekly cadence and produces structured, evidence-labeled intelligence.</p>
+    <div class="two-col">
+
+      <div class="card">
+        <span class="badge badge-blue">Weekly</span>
+        <h3>News Intelligence Workflow</h3>
+        <p>Curates and verifies recent developments across expert network providers — product launches, funding, partnerships, regulatory events, leadership changes.</p>
+        <hr class="card-divider">
+        <p class="card-label">Key Inputs</p>
+        <ul>
+          <li>Provider newsrooms and press releases</li>
+          <li>Regulatory filings and disclosures</li>
+          <li>Third-party market reporting</li>
+          <li>Product page and website changes</li>
+        </ul>
+        <hr class="card-divider">
+        <p class="card-label">Output</p>
+        <p>Structured signal cards with date, provider, category, summary, evidence label, and strategic implication.</p>
+      </div>
+
+      <div class="card">
+        <span class="badge badge-green">Weekly</span>
+        <h3>Competitive Advantage Analysis</h3>
+        <p>Analyzes how providers differentiate across key buyer-relevant dimensions — AI capability, content assets, compliance posture, service model, geography.</p>
+        <hr class="card-divider">
+        <p class="card-label">Key Inputs</p>
+        <ul>
+          <li>Current provider profile data (33 firms)</li>
+          <li>Recent intelligence signals</li>
+          <li>Compare-dimension framework (45+ fields)</li>
+          <li>Public financial and scale disclosures</li>
+        </ul>
+        <hr class="card-divider">
+        <p class="card-label">Output</p>
+        <p>Competitive matrices, advantage stacks, and strategic lens commentary — all labeled as editorial synthesis.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════ SATURDAY CYCLE ════════ -->
+<section id="cycle">
+  <div class="container">
+    <p class="section-label">Saturday Run Cycle</p>
+    <h2 class="section-title">Weekly execution cadence</h2>
+    <p class="section-sub">A structured sequence runs each Saturday. Each step is logged and reviewable.</p>
+    <div class="timeline">
+
+      <div class="tl-step active">
+        <div class="tl-dot"></div>
+        <div class="tl-label">1. Source scan</div>
+        <div class="tl-desc">Check provider newsrooms, press pages, filings, and tracked third-party sources for new material.</div>
+      </div>
+
+      <div class="tl-step">
+        <div class="tl-dot"></div>
+        <div class="tl-label">2. Signal extraction</div>
+        <div class="tl-desc">Identify discrete events: launches, funding, hires, partnerships, compliance updates, market sizing.</div>
+      </div>
+
+      <div class="tl-step">
+        <div class="tl-dot"></div>
+        <div class="tl-label">3. Evidence labeling</div>
+        <div class="tl-desc">Tag each signal with confidence level: verified, company-stated, inferred, or weak signal.</div>
+      </div>
+
+      <div class="tl-step">
+        <div class="tl-dot"></div>
+        <div class="tl-label">4. Deduplication &amp; filtering</div>
+        <div class="tl-desc">Remove duplicates, discard low-relevance noise, merge related signals where appropriate.</div>
+      </div>
+
+      <div class="tl-step">
+        <div class="tl-dot"></div>
+        <div class="tl-label">5. Competitive synthesis</div>
+        <div class="tl-desc">Update advantage stacks and comparative assessments based on new signal material.</div>
+      </div>
+
+      <div class="tl-step">
+        <div class="tl-dot"></div>
+        <div class="tl-label">6. Output generation</div>
+        <div class="tl-desc">Produce structured JSON content: news signals, provider updates, compare-dimension changes.</div>
+      </div>
+
+      <div class="tl-step">
+        <div class="tl-dot"></div>
+        <div class="tl-label">7. Human review</div>
+        <div class="tl-desc">Analyst reviews all outputs for accuracy, editorial tone, and factual restraint before publication.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════ AGENT ARCHITECTURE ════════ -->
+<section id="architecture">
+  <div class="container">
+    <p class="section-label">Agent Architecture</p>
+    <h2 class="section-title">Layered processing model</h2>
+    <p class="section-sub">Conceptual workflow layers — each handles a distinct responsibility in the intelligence pipeline.</p>
+    <div class="layer-stack">
+
+      <div class="layer">
+        <div class="layer-num">1</div>
+        <div class="layer-title">Source Intake</div>
+        <div class="layer-desc">Reads from provider websites, newsrooms, filings, and monitored third-party sources.</div>
+      </div>
+
+      <div class="layer">
+        <div class="layer-num">2</div>
+        <div class="layer-title">Filtering</div>
+        <div class="layer-desc">Applies relevance criteria — industry scope, recency, materiality threshold.</div>
+      </div>
+
+      <div class="layer">
+        <div class="layer-num">3</div>
+        <div class="layer-title">Evidence Review</div>
+        <div class="layer-desc">Assesses source quality and assigns confidence labels per the verification rubric.</div>
+      </div>
+
+      <div class="layer">
+        <div class="layer-num">4</div>
+        <div class="layer-title">Categorization</div>
+        <div class="layer-desc">Tags signals by type: product, funding, regulatory, M&amp;A, compliance, talent, market sizing.</div>
+      </div>
+
+      <div class="layer">
+        <div class="layer-num">5</div>
+        <div class="layer-title">Synthesis</div>
+        <div class="layer-desc">Generates implications, competitive context, and connects signals to the advantage framework.</div>
+      </div>
+
+      <div class="layer">
+        <div class="layer-num">6</div>
+        <div class="layer-title">Output Formatting</div>
+        <div class="layer-desc">Structures results as JSON content files matching the site's content schema.</div>
+      </div>
+
+      <div class="layer">
+        <div class="layer-num">7</div>
+        <div class="layer-title">Human Review</div>
+        <div class="layer-desc">Final analyst pass — editorial judgment, factual verification, tone calibration.</div>
+      </div>
+
+    </div>
+    <p class="note">This is a prototype workflow model. It does not describe a deployed autonomous agent system.</p>
+  </div>
+</section>
+
+<!-- ════════ VERIFICATION RUBRIC ════════ -->
+<section id="rubric">
+  <div class="container">
+    <p class="section-label">Verification Rubric</p>
+    <h2 class="section-title">How confidence is assessed</h2>
+    <p class="section-sub">Every signal is evaluated against five dimensions before inclusion.</p>
+    <div class="rubric-wrap">
+      <table class="rubric-table">
+        <thead>
+          <tr>
+            <th>Dimension</th>
+            <th>High Confidence</th>
+            <th>Medium</th>
+            <th>Low / Monitor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Source Quality</td>
+            <td>Official filing, SEC disclosure</td>
+            <td>Company press release</td>
+            <td>Single third-party mention</td>
+          </tr>
+          <tr>
+            <td>Recency</td>
+            <td>Within 30 days</td>
+            <td>Within 90 days</td>
+            <td>Older than 6 months</td>
+          </tr>
+          <tr>
+            <td>Evidence Directness</td>
+            <td>Named source, public record</td>
+            <td>Attributed statement</td>
+            <td>Inference from indirect data</td>
+          </tr>
+          <tr>
+            <td>Strategic Relevance</td>
+            <td>Affects competitive positioning</td>
+            <td>Relevant to market context</td>
+            <td>Peripheral or speculative</td>
+          </tr>
+          <tr>
+            <td>Confidence Label</td>
+            <td><span class="badge badge-green">Verified</span></td>
+            <td><span class="badge badge-blue">Company-Stated</span></td>
+            <td><span class="badge badge-amber">Inferred / Weak</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ HUMAN-IN-THE-LOOP ════════ -->
+<section id="human">
+  <div class="container">
+    <p class="section-label">Human-in-the-Loop</p>
+    <h2 class="section-title">Where analyst judgment matters</h2>
+    <p class="section-sub">Automation handles collection and structuring. Humans handle meaning.</p>
+    <div class="two-col">
+
+      <div class="card">
+        <h3>Judgment calls that require a human</h3>
+        <ul>
+          <li>Whether a signal is materially significant or noise</li>
+          <li>How to frame competitive implications without overstating</li>
+          <li>Whether inferred signals meet the threshold for inclusion</li>
+          <li>Editorial tone — avoiding hype, speculation, or false precision</li>
+          <li>Final approval before any content is published</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>What automation handles well</h3>
+        <ul>
+          <li>Scanning multiple source pages for new material</li>
+          <li>Extracting structured fields from unstructured text</li>
+          <li>Applying consistent categorization labels</li>
+          <li>Formatting output to match content schema</li>
+          <li>Flagging potential duplicates and conflicts</li>
+        </ul>
+      </div>
+
+    </div>
+    <p class="note">No output is published without human review. The system proposes; the analyst decides.</p>
+  </div>
+</section>
+
+<!-- ════════ OUTPUT ARTIFACTS ════════ -->
+<section id="artifacts">
+  <div class="container">
+    <p class="section-label">Output Artifacts</p>
+    <h2 class="section-title">What each cycle produces</h2>
+    <p class="section-sub">Four artifact types, each structured for direct integration into the editorial site.</p>
+    <div class="output-grid">
+
+      <div class="output-card">
+        <span class="badge badge-blue">Brief</span>
+        <h4>Weekly Intelligence Brief</h4>
+        <p>Executive summary of the week's most significant signals, framed for a market intelligence audience.</p>
+      </div>
+
+      <div class="output-card">
+        <span class="badge badge-green">Analysis</span>
+        <h4>Competitor Digest</h4>
+        <p>Updated competitive advantage stacks and dimension-level changes across tracked providers.</p>
+      </div>
+
+      <div class="output-card">
+        <span class="badge badge-blue">Structured</span>
+        <h4>Signal Cards</h4>
+        <p>Individual JSON records: date, provider, category, summary, evidence label, implication.</p>
+      </div>
+
+      <div class="output-card">
+        <span class="badge badge-amber">Tracking</span>
+        <h4>Watchlist Items</h4>
+        <p>Weak signals and emerging themes flagged for continued monitoring in future cycles.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════ FOOTER ════════ -->
+<footer>
+  <div class="container">
+    <p><strong>Prototype Operating-Model Demo</strong></p>
+    <p style="margin-top:0.5rem;">
+      This is a conceptual workflow illustration, not a live internal platform.<br>
+      It describes prototype automation logic for a public-source intelligence methodology.<br>
+      No production orchestration system, admin panel, or autonomous agent is implied.
+    </p>
+    <p style="margin-top:1rem;">March 2026 — ExpertNetworks.net</p>
+  </div>
+</footer>
+
+<!-- ════════ MINIMAL JS ════════ -->
+<script>
+document.querySelectorAll('nav a').forEach(function(link) {
+  link.addEventListener('click', function(e) {
+    var target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+</script>
+
+</body>
+</html>
