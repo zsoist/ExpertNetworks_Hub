@@ -110,26 +110,30 @@ section + section { border-top: 1px solid var(--border); }
 .flow-strip {
   display: flex; align-items: center; justify-content: center;
   gap: 0; flex-wrap: wrap;
-  margin: 0 auto; max-width: 720px;
+  margin: 0 auto; max-width: 760px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
 }
 .flow-step {
   background: var(--surface);
-  border: 1px solid var(--border);
-  padding: 0.6rem 1.1rem;
-  font-size: 0.78rem; font-weight: 500;
+  border-right: 1px solid var(--border);
+  padding: 0.75rem 1.3rem;
+  font-size: 0.78rem; font-weight: 600;
   color: var(--text-secondary);
   white-space: nowrap;
+  letter-spacing: 0.01em;
+  transition: color var(--ease), background var(--ease);
 }
-.flow-step:first-child { border-radius: var(--radius) 0 0 var(--radius); }
-.flow-step:last-child { border-radius: 0 var(--radius) var(--radius) 0; }
+.flow-step:hover { color: var(--text); background: var(--surface-hover); }
+.flow-step:last-child { border-right: none; }
 .flow-arrow {
-  color: var(--text-tertiary); font-size: 0.7rem;
-  padding: 0 0.15rem;
+  color: var(--accent-dim); font-size: 0.65rem;
   background: var(--surface);
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  padding: 0.6rem 0.4rem;
+  border-right: 1px solid var(--border);
+  padding: 0.75rem 0.35rem;
   line-height: 1;
+  opacity: 0.6;
 }
 
 /* ── Cards ── */
@@ -145,125 +149,144 @@ section + section { border-top: 1px solid var(--border); }
   box-shadow: var(--shadow-hover);
   transform: translateY(-1px);
 }
+.card .badge { margin-bottom: 0.65rem; }
 .card h3 {
   font-size: 0.92rem; font-weight: 600;
-  margin-bottom: 0.5rem; letter-spacing: -0.01em;
+  margin-bottom: 0.4rem; letter-spacing: -0.01em;
 }
-.card p, .card li {
+.card > p {
   font-size: 0.84rem; color: var(--text-secondary);
   line-height: 1.55;
 }
+.card li {
+  font-size: 0.82rem; color: var(--text-secondary);
+  line-height: 1.5;
+}
 .two-col {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;
 }
 .card-label {
   font-size: 0.65rem; font-weight: 600;
   text-transform: uppercase; letter-spacing: 0.08em;
-  color: var(--accent-dim); margin-bottom: 0.4rem;
+  color: var(--accent-dim); margin-bottom: 0.35rem;
 }
 .card ul { list-style: none; padding: 0; }
-.card li { padding: 0.2rem 0; }
+.card li { padding: 0.15rem 0; }
 .card li::before {
   content: "·"; color: var(--text-tertiary);
   margin-right: 0.5rem; font-weight: 700;
 }
 .card-divider {
   border: none; border-top: 1px solid var(--border);
-  margin: 0.75rem 0;
+  margin: 0.85rem 0;
 }
 
 /* ── Timeline ── */
 .timeline {
   position: relative;
-  padding-left: 2rem;
-  max-width: 640px;
+  padding-left: 2.25rem;
+  max-width: 600px;
 }
 .timeline::before {
   content: "";
-  position: absolute; left: 7px; top: 6px; bottom: 6px;
-  width: 1px; background: var(--border-strong);
+  position: absolute; left: 5px; top: 8px; bottom: 8px;
+  width: 1px;
+  background: linear-gradient(180deg, var(--accent-dim) 0%, var(--border) 100%);
 }
 .tl-step {
   position: relative;
-  padding: 0 0 1.75rem 1rem;
+  padding: 0 0 1.5rem 1rem;
 }
 .tl-step:last-child { padding-bottom: 0; }
 .tl-dot {
-  position: absolute; left: -2rem; top: 3px;
-  width: 15px; height: 15px;
+  position: absolute; left: -2.25rem; top: 4px;
+  width: 11px; height: 11px;
   border-radius: 50%;
   background: var(--bg);
-  border: 2px solid var(--accent-dim);
+  border: 2px solid var(--border-strong);
+  transition: background var(--ease), border-color var(--ease);
 }
 .tl-step.active .tl-dot {
   background: var(--accent);
   border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-muted);
 }
 .tl-label {
-  font-size: 0.85rem; font-weight: 600;
-  margin-bottom: 0.2rem;
+  font-size: 0.84rem; font-weight: 600;
+  margin-bottom: 0.15rem; letter-spacing: -0.01em;
 }
 .tl-desc {
-  font-size: 0.8rem; color: var(--text-secondary);
+  font-size: 0.79rem; color: var(--text-secondary);
   line-height: 1.45;
 }
-.tl-time {
-  font-size: 0.7rem; color: var(--text-tertiary);
-  margin-top: 0.15rem;
-}
-
 /* ── Layer stack ── */
 .layer-stack {
-  display: flex; flex-direction: column; gap: 0.5rem;
-  max-width: 640px;
+  display: flex; flex-direction: column; gap: 0.4rem;
+  max-width: 700px;
 }
 .layer {
   display: flex; align-items: center; gap: 1rem;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  padding: 0.85rem 1.2rem;
+  padding: 0.8rem 1.25rem;
   box-shadow: var(--shadow);
+  transition: box-shadow var(--ease), transform var(--ease);
+}
+.layer:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-1px);
 }
 .layer-num {
-  font-size: 0.65rem; font-weight: 700;
+  font-size: 0.62rem; font-weight: 700;
   color: var(--accent); background: var(--accent-muted);
-  width: 24px; height: 24px; border-radius: 50%;
+  width: 26px; height: 26px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
 }
+.layer:last-child .layer-num {
+  color: var(--green); background: var(--green-muted);
+}
 .layer-title {
   font-size: 0.84rem; font-weight: 600;
-  flex-shrink: 0; min-width: 120px;
+  flex-shrink: 0; min-width: 130px;
+  letter-spacing: -0.01em;
 }
 .layer-desc {
   font-size: 0.78rem; color: var(--text-secondary);
+  line-height: 1.45;
 }
 
 /* ── Rubric table ── */
-.rubric-table {
-  width: 100%; border-collapse: collapse;
-  font-size: 0.8rem; max-width: 720px;
-}
-.rubric-table th, .rubric-table td {
-  padding: 0.65rem 0.9rem;
-  border-bottom: 1px solid var(--border);
-  text-align: left; vertical-align: top;
-}
-.rubric-table th {
-  background: rgba(255,255,255,0.03);
-  color: var(--text-tertiary);
-  font-weight: 600; font-size: 0.68rem;
-  text-transform: uppercase; letter-spacing: 0.06em;
-}
-.rubric-table td { color: var(--text-secondary); }
-.rubric-table td:first-child { color: var(--text); font-weight: 500; }
-.rubric-table tbody tr:last-child td { border-bottom: none; }
 .rubric-wrap {
   border-radius: var(--radius);
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
   overflow: hidden;
+  max-width: 760px;
+}
+.rubric-table {
+  width: 100%; border-collapse: collapse;
+  font-size: 0.79rem;
+}
+.rubric-table th, .rubric-table td {
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid var(--border);
+  text-align: left; vertical-align: middle;
+}
+.rubric-table th {
+  background: rgba(255,255,255,0.03);
+  color: var(--text-tertiary);
+  font-weight: 600; font-size: 0.66rem;
+  text-transform: uppercase; letter-spacing: 0.06em;
+}
+.rubric-table td { color: var(--text-secondary); font-size: 0.79rem; }
+.rubric-table td:first-child { color: var(--text); font-weight: 500; white-space: nowrap; }
+.rubric-table tbody tr { transition: background var(--ease); }
+.rubric-table tbody tr:hover td { background: rgba(255,255,255,0.02); }
+.rubric-table tbody tr:last-child td {
+  border-bottom: none;
+  background: rgba(255,255,255,0.015);
 }
 
 /* ── Badge ── */
@@ -279,23 +302,36 @@ section + section { border-top: 1px solid var(--border); }
 
 /* ── Output examples ── */
 .output-grid {
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;
 }
 .output-card {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 1.2rem 1.3rem;
+  padding: 1.25rem 1.3rem;
   box-shadow: var(--shadow);
+  transition: box-shadow var(--ease), transform var(--ease);
 }
+.output-card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-1px);
+}
+.output-card .badge { margin-bottom: 0.55rem; }
 .output-card h4 {
   font-size: 0.82rem; font-weight: 600;
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.3rem; letter-spacing: -0.01em;
 }
 .output-card p {
   font-size: 0.78rem; color: var(--text-secondary);
   line-height: 1.5;
 }
+
+/* ── Fade-in ── */
+.fade-in {
+  opacity: 0; transform: translateY(12px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.fade-in.visible { opacity: 1; transform: translateY(0); }
 
 /* ── Note ── */
 .note {
@@ -381,14 +417,14 @@ footer strong { color: var(--text-secondary); font-weight: 600; letter-spacing: 
     <p class="section-label">What the System Produces</p>
     <h2 class="section-title">Two recurring analysis outputs</h2>
     <p class="section-sub">Each runs on a weekly cadence and produces structured, evidence-labeled intelligence.</p>
-    <div class="two-col">
+    <div class="two-col fade-in">
 
       <div class="card">
         <span class="badge badge-blue">Weekly</span>
         <h3>News Intelligence Workflow</h3>
-        <p>Curates and verifies recent developments across expert network providers — product launches, funding, partnerships, regulatory events, leadership changes.</p>
+        <p>Curates and verifies developments across expert network providers — launches, funding, partnerships, regulatory events, leadership moves.</p>
         <hr class="card-divider">
-        <p class="card-label">Key Inputs</p>
+        <p class="card-label">Inputs</p>
         <ul>
           <li>Provider newsrooms and press releases</li>
           <li>Regulatory filings and disclosures</li>
@@ -397,24 +433,24 @@ footer strong { color: var(--text-secondary); font-weight: 600; letter-spacing: 
         </ul>
         <hr class="card-divider">
         <p class="card-label">Output</p>
-        <p>Structured signal cards with date, provider, category, summary, evidence label, and strategic implication.</p>
+        <p>Structured signal cards with date, provider, category, summary, evidence label, and implication.</p>
       </div>
 
       <div class="card">
         <span class="badge badge-green">Weekly</span>
         <h3>Competitive Advantage Analysis</h3>
-        <p>Analyzes how providers differentiate across key buyer-relevant dimensions — AI capability, content assets, compliance posture, service model, geography.</p>
+        <p>Assesses how providers differentiate across buyer-relevant dimensions — AI capability, content assets, compliance, service model, geography.</p>
         <hr class="card-divider">
-        <p class="card-label">Key Inputs</p>
+        <p class="card-label">Inputs</p>
         <ul>
-          <li>Current provider profile data (33 firms)</li>
+          <li>Provider profile data (33 firms)</li>
           <li>Recent intelligence signals</li>
           <li>Compare-dimension framework (45+ fields)</li>
           <li>Public financial and scale disclosures</li>
         </ul>
         <hr class="card-divider">
         <p class="card-label">Output</p>
-        <p>Competitive matrices, advantage stacks, and strategic lens commentary — all labeled as editorial synthesis.</p>
+        <p>Competitive matrices, advantage stacks, and strategic commentary — labeled as editorial synthesis.</p>
       </div>
 
     </div>
@@ -427,48 +463,48 @@ footer strong { color: var(--text-secondary); font-weight: 600; letter-spacing: 
     <p class="section-label">Saturday Run Cycle</p>
     <h2 class="section-title">Weekly execution cadence</h2>
     <p class="section-sub">A structured sequence runs each Saturday. Each step is logged and reviewable.</p>
-    <div class="timeline">
+    <div class="timeline fade-in">
 
       <div class="tl-step active">
         <div class="tl-dot"></div>
         <div class="tl-label">1. Source scan</div>
-        <div class="tl-desc">Check provider newsrooms, press pages, filings, and tracked third-party sources for new material.</div>
+        <div class="tl-desc">Check provider newsrooms, press pages, filings, and third-party sources for new material.</div>
       </div>
 
       <div class="tl-step">
         <div class="tl-dot"></div>
         <div class="tl-label">2. Signal extraction</div>
-        <div class="tl-desc">Identify discrete events: launches, funding, hires, partnerships, compliance updates, market sizing.</div>
+        <div class="tl-desc">Identify discrete events — launches, funding, hires, partnerships, compliance, market sizing.</div>
       </div>
 
       <div class="tl-step">
         <div class="tl-dot"></div>
         <div class="tl-label">3. Evidence labeling</div>
-        <div class="tl-desc">Tag each signal with confidence level: verified, company-stated, inferred, or weak signal.</div>
+        <div class="tl-desc">Assign confidence: verified, company-stated, inferred, or weak signal.</div>
       </div>
 
       <div class="tl-step">
         <div class="tl-dot"></div>
         <div class="tl-label">4. Deduplication &amp; filtering</div>
-        <div class="tl-desc">Remove duplicates, discard low-relevance noise, merge related signals where appropriate.</div>
+        <div class="tl-desc">Remove duplicates, discard noise, merge related signals.</div>
       </div>
 
       <div class="tl-step">
         <div class="tl-dot"></div>
         <div class="tl-label">5. Competitive synthesis</div>
-        <div class="tl-desc">Update advantage stacks and comparative assessments based on new signal material.</div>
+        <div class="tl-desc">Update advantage stacks and comparative assessments from new material.</div>
       </div>
 
       <div class="tl-step">
         <div class="tl-dot"></div>
         <div class="tl-label">6. Output generation</div>
-        <div class="tl-desc">Produce structured JSON content: news signals, provider updates, compare-dimension changes.</div>
+        <div class="tl-desc">Produce structured content: news signals, provider updates, compare-dimension changes.</div>
       </div>
 
       <div class="tl-step">
         <div class="tl-dot"></div>
         <div class="tl-label">7. Human review</div>
-        <div class="tl-desc">Analyst reviews all outputs for accuracy, editorial tone, and factual restraint before publication.</div>
+        <div class="tl-desc">Analyst verifies accuracy, tone, and factual restraint before publication.</div>
       </div>
 
     </div>
@@ -481,7 +517,7 @@ footer strong { color: var(--text-secondary); font-weight: 600; letter-spacing: 
     <p class="section-label">Agent Architecture</p>
     <h2 class="section-title">Layered processing model</h2>
     <p class="section-sub">Conceptual workflow layers — each handles a distinct responsibility in the intelligence pipeline.</p>
-    <div class="layer-stack">
+    <div class="layer-stack fade-in">
 
       <div class="layer">
         <div class="layer-num">1</div>
@@ -536,7 +572,7 @@ footer strong { color: var(--text-secondary); font-weight: 600; letter-spacing: 
     <p class="section-label">Verification Rubric</p>
     <h2 class="section-title">How confidence is assessed</h2>
     <p class="section-sub">Every signal is evaluated against five dimensions before inclusion.</p>
-    <div class="rubric-wrap">
+    <div class="rubric-wrap fade-in">
       <table class="rubric-table">
         <thead>
           <tr>
@@ -589,27 +625,27 @@ footer strong { color: var(--text-secondary); font-weight: 600; letter-spacing: 
     <p class="section-label">Human-in-the-Loop</p>
     <h2 class="section-title">Where analyst judgment matters</h2>
     <p class="section-sub">Automation handles collection and structuring. Humans handle meaning.</p>
-    <div class="two-col">
+    <div class="two-col fade-in">
 
       <div class="card">
-        <h3>Judgment calls that require a human</h3>
+        <h3>Requires human judgment</h3>
         <ul>
-          <li>Whether a signal is materially significant or noise</li>
-          <li>How to frame competitive implications without overstating</li>
-          <li>Whether inferred signals meet the threshold for inclusion</li>
-          <li>Editorial tone — avoiding hype, speculation, or false precision</li>
+          <li>Is a signal materially significant or noise?</li>
+          <li>How to frame implications without overstating</li>
+          <li>Whether inferred signals meet the inclusion threshold</li>
+          <li>Editorial tone — no hype, speculation, or false precision</li>
           <li>Final approval before any content is published</li>
         </ul>
       </div>
 
       <div class="card">
-        <h3>What automation handles well</h3>
+        <h3>Well-suited for automation</h3>
         <ul>
           <li>Scanning multiple source pages for new material</li>
           <li>Extracting structured fields from unstructured text</li>
           <li>Applying consistent categorization labels</li>
           <li>Formatting output to match content schema</li>
-          <li>Flagging potential duplicates and conflicts</li>
+          <li>Flagging duplicates and conflicts</li>
         </ul>
       </div>
 
@@ -624,7 +660,7 @@ footer strong { color: var(--text-secondary); font-weight: 600; letter-spacing: 
     <p class="section-label">Output Artifacts</p>
     <h2 class="section-title">What each cycle produces</h2>
     <p class="section-sub">Four artifact types, each structured for direct integration into the editorial site.</p>
-    <div class="output-grid">
+    <div class="output-grid fade-in">
 
       <div class="output-card">
         <span class="badge badge-blue">Brief</span>
@@ -669,6 +705,7 @@ footer strong { color: var(--text-secondary); font-weight: 600; letter-spacing: 
 
 <!-- ════════ MINIMAL JS ════════ -->
 <script>
+/* Smooth-scroll for nav links */
 document.querySelectorAll('nav a').forEach(function(link) {
   link.addEventListener('click', function(e) {
     var target = document.querySelector(this.getAttribute('href'));
@@ -677,6 +714,20 @@ document.querySelectorAll('nav a').forEach(function(link) {
       target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   });
+});
+
+/* Fade-in on scroll */
+var observer = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.fade-in').forEach(function(el) {
+  observer.observe(el);
 });
 </script>
 
