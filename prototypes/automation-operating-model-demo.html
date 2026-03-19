@@ -136,6 +136,23 @@ section + section { border-top: 1px solid var(--border); }
   opacity: 0.6;
 }
 
+/* ── Value strip ── */
+.value-strip {
+  display: flex; justify-content: center; gap: 2rem;
+  margin-top: 2rem; flex-wrap: wrap;
+}
+.value-item {
+  text-align: center; max-width: 200px;
+}
+.value-item .vi-label {
+  font-size: 0.82rem; font-weight: 600;
+  color: var(--text); margin-bottom: 0.15rem;
+}
+.value-item .vi-desc {
+  font-size: 0.72rem; color: var(--text-tertiary);
+  line-height: 1.4;
+}
+
 /* ── Cards ── */
 .card {
   background: var(--surface);
@@ -382,7 +399,7 @@ footer strong { color: var(--text-secondary); font-weight: 600; letter-spacing: 
     <li><a href="#outputs-what">What It Produces</a></li>
     <li><a href="#cycle">Saturday Cycle</a></li>
     <li><a href="#architecture">Agent Architecture</a></li>
-    <li><a href="#rubric">Verification</a></li>
+    <li><a href="#rubric">Quality Control</a></li>
     <li><a href="#human">Human Review</a></li>
     <li><a href="#artifacts">Output Artifacts</a></li>
   </ul>
@@ -393,7 +410,7 @@ footer strong { color: var(--text-secondary); font-weight: 600; letter-spacing: 
   <div class="container">
     <p class="section-label">Prototype Operating Model</p>
     <h1>Automation Operating Model</h1>
-    <p class="subtitle">How a recurring intelligence workflow collects, verifies, and synthesizes public-source signals into structured competitive intelligence for the expert network industry.</p>
+    <p class="subtitle">Competitive intelligence loses value when it is stale, inconsistent, or unverified. This operating model shows how structured automation solves that — with human review as the final gate.</p>
     <p class="context">Conceptual prototype — illustrates workflow logic, not a production orchestration system.</p>
     <div class="flow-strip">
       <div class="flow-step">Sources</div>
@@ -408,15 +425,29 @@ footer strong { color: var(--text-secondary); font-weight: 600; letter-spacing: 
       <div class="flow-arrow">→</div>
       <div class="flow-step">Review</div>
     </div>
+    <div class="value-strip">
+      <div class="value-item">
+        <div class="vi-label">Signal Intake</div>
+        <div class="vi-desc">Consistent, repeatable collection</div>
+      </div>
+      <div class="value-item">
+        <div class="vi-label">Verification Discipline</div>
+        <div class="vi-desc">Every claim labeled by evidence type</div>
+      </div>
+      <div class="value-item">
+        <div class="vi-label">Strategic Synthesis</div>
+        <div class="vi-desc">Implications framed for decisions</div>
+      </div>
+    </div>
   </div>
 </section>
 
 <!-- ════════ WHAT IT PRODUCES ════════ -->
 <section id="outputs-what">
   <div class="container">
-    <p class="section-label">What the System Produces</p>
-    <h2 class="section-title">Two recurring analysis outputs</h2>
-    <p class="section-sub">Each runs on a weekly cadence and produces structured, evidence-labeled intelligence.</p>
+    <p class="section-label">What It Produces</p>
+    <h2 class="section-title">Two recurring outputs, one weekly cadence</h2>
+    <p class="section-sub">Each output is structured, evidence-labeled, and reviewed before publication.</p>
     <div class="two-col fade-in">
 
       <div class="card">
@@ -569,9 +600,9 @@ footer strong { color: var(--text-secondary); font-weight: 600; letter-spacing: 
 <!-- ════════ VERIFICATION RUBRIC ════════ -->
 <section id="rubric">
   <div class="container">
-    <p class="section-label">Verification Rubric</p>
+    <p class="section-label">Quality Control</p>
     <h2 class="section-title">How confidence is assessed</h2>
-    <p class="section-sub">Every signal is evaluated against five dimensions before inclusion.</p>
+    <p class="section-sub">No signal is published without passing this rubric. Five dimensions, three confidence tiers.</p>
     <div class="rubric-wrap fade-in">
       <table class="rubric-table">
         <thead>
@@ -623,8 +654,8 @@ footer strong { color: var(--text-secondary); font-weight: 600; letter-spacing: 
 <section id="human">
   <div class="container">
     <p class="section-label">Human-in-the-Loop</p>
-    <h2 class="section-title">Where analyst judgment matters</h2>
-    <p class="section-sub">Automation handles collection and structuring. Humans handle meaning.</p>
+    <h2 class="section-title">Automation proposes. The analyst decides.</h2>
+    <p class="section-sub">Collection and structuring are automated. Judgment, tone, and publication authority stay human.</p>
     <div class="two-col fade-in">
 
       <div class="card">
@@ -650,7 +681,7 @@ footer strong { color: var(--text-secondary); font-weight: 600; letter-spacing: 
       </div>
 
     </div>
-    <p class="note">No output is published without human review. The system proposes; the analyst decides.</p>
+    <p class="note">No content reaches the site without explicit analyst approval.</p>
   </div>
 </section>
 
@@ -658,8 +689,8 @@ footer strong { color: var(--text-secondary); font-weight: 600; letter-spacing: 
 <section id="artifacts">
   <div class="container">
     <p class="section-label">Output Artifacts</p>
-    <h2 class="section-title">What each cycle produces</h2>
-    <p class="section-sub">Four artifact types, each structured for direct integration into the editorial site.</p>
+    <h2 class="section-title">Four deliverables per cycle</h2>
+    <p class="section-sub">Each structured for direct integration into the editorial site.</p>
     <div class="output-grid fade-in">
 
       <div class="output-card">

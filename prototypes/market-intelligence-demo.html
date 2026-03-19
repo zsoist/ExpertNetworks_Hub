@@ -316,6 +316,28 @@ table.matrix tbody tr:last-child td { border-bottom: none; }
   line-height: 1.5;
 }
 
+/* ── Evidence legend ── */
+.evidence-legend {
+  display: flex; gap: 1.25rem; flex-wrap: wrap;
+  padding: 0.9rem 1.3rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  margin-bottom: 2.5rem;
+}
+.legend-item {
+  display: flex; align-items: center; gap: 0.4rem;
+  font-size: 0.72rem; color: var(--text-secondary);
+}
+.legend-dot {
+  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+}
+.legend-dot-verified { background: #4ade80; }
+.legend-dot-stated { background: #60a5fa; }
+.legend-dot-editorial { background: #facc15; }
+.legend-dot-watch { background: #8a8a90; }
+
 /* ── Footer ── */
 footer {
   border-top: 1px solid var(--border);
@@ -375,8 +397,8 @@ footer strong { color: var(--text-secondary); font-weight: 600; letter-spacing: 
   <div class="container">
     <p class="section-label">Prototype Intelligence Briefing</p>
     <h1>Expert Network Market Intelligence</h1>
-    <p class="subtitle">A public-source competitive intelligence layer for tracking provider moves, AI capabilities, product evolution, and buyer-relevant differentiators across the expert network industry.</p>
-    <p class="context">Built on editorial research from ExpertNetworks.net — structured for decision-makers, not consumers.</p>
+    <p class="subtitle">Public-source competitive intelligence on provider moves, AI capabilities, and buyer-relevant differentiators across the expert network industry.</p>
+    <p class="context">Editorial research from ExpertNetworks.net — structured for decision-makers, not consumers.</p>
     <div class="stat-band">
       <div class="stat-card">
         <div class="number">33</div>
@@ -397,26 +419,33 @@ footer strong { color: var(--text-secondary); font-weight: 600; letter-spacing: 
 <!-- ════════════ EXECUTIVE SUMMARY ════════════ -->
 <section id="summary">
   <div class="container">
+    <p class="section-label">How to Read This Page</p>
+    <div class="evidence-legend fade-in">
+      <div class="legend-item"><span class="legend-dot legend-dot-verified"></span> Public fact — verified through filings or multiple sources</div>
+      <div class="legend-item"><span class="legend-dot legend-dot-stated"></span> Company-stated — provider's own disclosure, not independently verified</div>
+      <div class="legend-item"><span class="legend-dot legend-dot-editorial"></span> Editorial synthesis — analyst judgment from multiple data points</div>
+      <div class="legend-item"><span class="legend-dot legend-dot-watch"></span> Watch signal — early indicator, not yet confirmed</div>
+    </div>
     <p class="section-label">Executive Summary</p>
-    <h2 class="section-title">What the landscape looks like now</h2>
-    <p class="section-subtitle">Four structural dynamics shaping the expert network market in 2025–2026.</p>
+    <h2 class="section-title">Four dynamics shaping the market</h2>
+    <p class="section-subtitle">Structural shifts in expert networks, 2025–2026. Claims labeled by evidence type.</p>
     <div class="card-grid">
 
       <div class="card fade-in">
         <h3>Market Consolidation</h3>
-        <p>An estimated $2.5–5B market with 11,200+ corporate users. Roughly 15 institutional-grade firms handle most volume; dozens of niche players serve specific verticals.</p>
+        <p>Third-party estimates place the market at $2.5–5B (range reflects differing methodologies). A small group of institutional-grade firms handles most volume; dozens of niche players serve specific verticals.</p>
         <div class="so-what">Scale advantages are compounding — smaller firms face margin pressure.</div>
       </div>
 
       <div class="card fade-in">
         <h3>AI Is Now Table Stakes</h3>
-        <p>Every major provider shipped AI features in 2024–2026. AlphaSense hit $500M ARR with agentic tools. GLG, Guidepoint, and Dialectica each launched AI matching or synthesis products.</p>
+        <p>Every major provider shipped AI features in 2024–2026. AlphaSense disclosed $500M ARR alongside agentic tools. GLG, Guidepoint, and Dialectica each launched AI matching or synthesis products.</p>
         <div class="so-what">Buyer expectations for AI-augmented delivery are outpacing provider roadmaps.</div>
       </div>
 
       <div class="card fade-in">
         <h3>Content &amp; Transcript Arms Race</h3>
-        <p>Third Bridge distributes its library through six AI partners. AlphaSense claims 240K+ transcripts. Content-rich models create switching costs that call-only providers cannot match.</p>
+        <p>Third Bridge distributes its library through six AI partners. AlphaSense states 240K+ transcripts. Content-rich models create switching costs that call-only providers struggle to match.</p>
         <div class="so-what">Providers without a content asset will compete on price and speed alone.</div>
       </div>
 
@@ -434,27 +463,27 @@ footer strong { color: var(--text-secondary); font-weight: 600; letter-spacing: 
 <section id="map">
   <div class="container">
     <p class="section-label">Market Map</p>
-    <h2 class="section-title">Landscape Segmentation</h2>
-    <p class="section-subtitle">Editorial synthesis of the competitive landscape across service model and platform capability.</p>
+    <h2 class="section-title">Landscape segmentation</h2>
+    <p class="section-subtitle">Editorial positioning based on public disclosures. Scale figures are company-stated unless otherwise noted.</p>
     <div class="quadrant-grid fade-in">
 
       <div class="quadrant-cell">
         <h4>Global Full-Service Leaders</h4>
         <ul>
-          <li><strong>GLG</strong> — ~1.2M experts, concierge model, Ask AI synthesis</li>
-          <li><strong>AlphaSights</strong> — $4.2B valuation, AlphaGPT, 70% CAGR</li>
-          <li><strong>Third Bridge</strong> — Library of 65K+ companies, open distribution</li>
-          <li><strong>Guidepoint</strong> — 1.75M+ experts, Guidepoint360, 5,000+ clients</li>
+          <li><strong>GLG</strong> — ~1.2M experts (stated), concierge model, Ask AI synthesis</li>
+          <li><strong>AlphaSights</strong> — $4.2B valuation (stated), AlphaGPT, rapid growth</li>
+          <li><strong>Third Bridge</strong> — Library covering 65K+ companies, open distribution</li>
+          <li><strong>Guidepoint</strong> — 1.75M+ experts (stated), Guidepoint360</li>
         </ul>
       </div>
 
       <div class="quadrant-cell">
         <h4>AI-Forward / Platform-Led</h4>
         <ul>
-          <li><strong>AlphaSense (incl. Tegus)</strong> — $500M ARR, agentic Deep Research</li>
-          <li><strong>NewtonX</strong> — Knowledge Graph (1.1B records), B2B survey focus</li>
+          <li><strong>AlphaSense (incl. Tegus)</strong> — $500M ARR (disclosed), agentic Deep Research</li>
+          <li><strong>NewtonX</strong> — Knowledge Graph (1.1B records, stated), B2B survey focus</li>
           <li><strong>Techspert</strong> — AI-native life sciences matching</li>
-          <li><strong>Dialectica</strong> — IQ platform, 80M records, 50+ GenAI tools</li>
+          <li><strong>Dialectica</strong> — IQ platform, 80M records (stated), 50+ GenAI tools</li>
         </ul>
       </div>
 
@@ -487,8 +516,8 @@ footer strong { color: var(--text-secondary); font-weight: 600; letter-spacing: 
 <section id="signals">
   <div class="container">
     <p class="section-label">Intelligence Stream</p>
-    <h2 class="section-title">Recent Competitor Signals</h2>
-    <p class="section-subtitle">Select public-source signals illustrating market movement. Each labeled as editorial synthesis.</p>
+    <h2 class="section-title">Recent competitor signals</h2>
+    <p class="section-subtitle">Select public-source events illustrating market movement. Implications are editorial synthesis.</p>
     <div class="signal-list fade-in">
 
       <div class="signal">
@@ -497,8 +526,8 @@ footer strong { color: var(--text-secondary); font-weight: 600; letter-spacing: 
           <span class="signal-tag">AI Launch</span>
         </div>
         <div class="signal-body">
-          <h4>AlphaSense reaches $500M ARR, launches agentic Deep Research</h4>
-          <p>Disclosed $500M ARR. Launched Deep Research (agentic workflows) and AI-driven Channel Checks that automate expert interviewing.</p>
+          <h4>AlphaSense discloses $500M ARR, launches agentic Deep Research</h4>
+          <p>Company disclosed $500M ARR milestone. Launched Deep Research (agentic workflows) and AI-driven Channel Checks for automated expert interviewing.</p>
           <div class="implication">Raises the ceiling for buyer expectations — providers without agentic capabilities face repositioning pressure.</div>
         </div>
       </div>
@@ -533,8 +562,8 @@ footer strong { color: var(--text-secondary); font-weight: 600; letter-spacing: 
           <span class="signal-tag">Milestone</span>
         </div>
         <div class="signal-body">
-          <h4>Dialectica surpasses $100M revenue with 1,400 employees</h4>
-          <p>Exceeded $100M revenue, 70% lifetime CAGR, five consecutive FT 1000 appearances. Appointed Jason Howard (ex-Tegus GC, 13 years SEC) as CLO.</p>
+          <h4>Dialectica reports surpassing $100M revenue</h4>
+          <p>Company stated it exceeded $100M revenue with 1,400 employees. Five consecutive FT 1000 appearances. Appointed Jason Howard (ex-Tegus GC, 13 years SEC) as CLO.</p>
           <div class="implication">Growth-stage firm maturing into institutional credibility — compliance hire signals readiness for regulated enterprise accounts.</div>
         </div>
       </div>
@@ -545,8 +574,8 @@ footer strong { color: var(--text-secondary); font-weight: 600; letter-spacing: 
           <span class="signal-tag">Funding</span>
         </div>
         <div class="signal-body">
-          <h4>AlphaSights raises $400M at $4.2B valuation</h4>
-          <p>Closed $400M raise at $4.2B valuation. Named FT Growth Champion 2026, reporting 70% CAGR.</p>
+          <h4>AlphaSights raises $400M at reported $4.2B valuation</h4>
+          <p>Closed $400M raise at a reported $4.2B valuation. Named FT Growth Champion 2026.</p>
           <div class="implication">Validates the market thesis at scale — expert networks attracting growth-equity capital typically reserved for enterprise SaaS.</div>
         </div>
       </div>
@@ -571,8 +600,8 @@ footer strong { color: var(--text-secondary); font-weight: 600; letter-spacing: 
 <section id="framework">
   <div class="container">
     <p class="section-label">Competitive Framework</p>
-    <h2 class="section-title">Advantage Stack by Dimension</h2>
-    <p class="section-subtitle">How the top five providers differentiate across key buyer-relevant dimensions. Based on public disclosures and editorial assessment.</p>
+    <h2 class="section-title">Advantage stack by dimension</h2>
+    <p class="section-subtitle">Five providers compared across buyer-relevant dimensions. Scale figures are company-stated. Characterizations are editorial synthesis.</p>
     <div class="matrix-wrapper fade-in">
       <table class="matrix">
         <thead>
@@ -653,8 +682,8 @@ footer strong { color: var(--text-secondary); font-weight: 600; letter-spacing: 
 <section id="methodology">
   <div class="container">
     <p class="section-label">Methodology</p>
-    <h2 class="section-title">Intelligence Sourcing &amp; Evidence Framework</h2>
-    <p class="section-subtitle">All intelligence is derived from public sources. No proprietary, confidential, or insider data is used.</p>
+    <h2 class="section-title">Sourcing &amp; evidence framework</h2>
+    <p class="section-subtitle">All intelligence derived from public sources. No proprietary, confidential, or insider data.</p>
 
     <p style="font-size:0.84rem; color:var(--text-secondary); margin-bottom:1.75rem; line-height:1.6;">
       Sources: provider websites, product pages, press releases, regulatory filings, market reports (Inex One, BRI, Silverlight Research), and third-party reporting. Web-property change tracking applied where available.
